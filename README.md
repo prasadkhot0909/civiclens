@@ -78,12 +78,31 @@ Department representatives cannot simply type text notes to mark a problem as so
 
 ## 🚀 Running the Application
 
-1. Start the server:
-   ```bash
-   npm start
-   ```
-2. Navigate to:
-   ```
-   http://localhost:3000
-   ```
-3. Click **"👤 Citizen Login"** or **"🏛️ Department Rep"** to test each portal.
+### 1. Install Dependencies (first time only)
+```bash
+npm install
+```
+
+### 2. Reset or Seed Sample Data (Optional)
+To populate sample grievances across Road, Waste, Water, and Power departments:
+```bash
+npm run seed
+```
+
+### 3. Start the Web Server
+```bash
+npm start
+```
+The server will run at:
+**`http://localhost:3000`**
+
+### 4. Share Publicly Online (Cloudflare Tunnel)
+In a second terminal window:
+```bash
+npm run tunnel
+```
+or run directly:
+```bash
+.\cloudflared.exe tunnel --url http://localhost:3000
+```
+This generates a live public HTTPS link (e.g. `https://xxxx.trycloudflare.com`) that you can share with anyone on mobile or desktop anywhere.
