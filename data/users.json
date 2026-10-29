@@ -1,0 +1,92 @@
+[
+  {
+    "id": "usr_cit_001",
+    "email": "citizen@civic.gov",
+    "passwordHash": "0b2d14787d355b703baccce8a89d92f3284c075f2d1abd6200e9f18462d4ed0ab214946b08410faf2dc5ce7dcffb0dc0049ae42819ea51af6bf4713d8db69469",
+    "name": "Aarav Mehta",
+    "phone": "+91 98200 45112",
+    "role": "CITIZEN",
+    "departmentId": null,
+    "departmentName": null,
+    "createdAt": "2026-10-29T17:13:09.292Z",
+    "isEmailVerified": true
+  },
+  {
+    "id": "usr_cit_002",
+    "email": "priya.sharma@civic.gov",
+    "passwordHash": "0b2d14787d355b703baccce8a89d92f3284c075f2d1abd6200e9f18462d4ed0ab214946b08410faf2dc5ce7dcffb0dc0049ae42819ea51af6bf4713d8db69469",
+    "name": "Priya Sharma",
+    "phone": "+91 98765 43210",
+    "role": "CITIZEN",
+    "departmentId": null,
+    "departmentName": null,
+    "createdAt": "2026-10-29T17:13:09.295Z"
+  },
+  {
+    "id": "usr_dept_road",
+    "email": "roads@city.gov",
+    "passwordHash": "354ff7c4bdb9bbd636c1f894e9b13ba281375a846d3ea699508263b49cf5f90554fa11e97823cdf2ae161759d56690bcce7e96b32e2e14efa210d451303e9d15",
+    "name": "Er. R. Sharma",
+    "role": "DEPARTMENT",
+    "departmentId": "road_admin",
+    "departmentName": "Road Administration & Transport Department",
+    "title": "Chief Maintenance Engineer",
+    "createdAt": "2026-10-29T17:13:09.296Z"
+  },
+  {
+    "id": "usr_dept_waste",
+    "email": "sanitation@city.gov",
+    "passwordHash": "63ab8bd1c36ba551147cba3302ed1e3e0f129a505172af3b0cb6623efb1c84c4ebd4acb0f46ecb6d8935176d0d3f29d0b0b7c27308f196fb5f32873c78f6fd25",
+    "name": "Dr. A. Verma",
+    "role": "DEPARTMENT",
+    "departmentId": "municipal_corp",
+    "departmentName": "Municipal Solid Waste & Sanitation Corporation",
+    "title": "Sanitation Commissioner",
+    "createdAt": "2026-10-29T17:13:09.298Z"
+  },
+  {
+    "id": "usr_dept_water",
+    "email": "water@city.gov",
+    "passwordHash": "60c343155aad9c8362f25b3c4d439f8efbe6c61e3e83a0badbec46ffd4f1aa163305a6cac9708002a677a08d6848f74e0cbcc59418918476dc651b6add9864b4",
+    "name": "Er. K. Nair",
+    "role": "DEPARTMENT",
+    "departmentId": "water_board",
+    "departmentName": "Water Supply & Sewerage Board",
+    "title": "Executive Hydraulic Engineer",
+    "createdAt": "2026-10-29T17:13:09.299Z"
+  },
+  {
+    "id": "usr_dept_power",
+    "email": "power@city.gov",
+    "passwordHash": "39e73e8fd72d7f314295735ea219bbac6a2e7fd713e5f57b8ee22fd73a5f918a275e4730f97e475f39fcd23b5071255f8d316dba8e478406de0f1259a2fb2f14",
+    "name": "Chief Inspector M. Patel",
+    "role": "DEPARTMENT",
+    "departmentId": "power_board",
+    "departmentName": "Electricity & Public Infrastructure Board",
+    "title": "Grid Safety Division Head",
+    "createdAt": "2026-10-29T17:13:09.300Z"
+  },
+  {
+    "id": "usr_dept_admin",
+    "email": "admin@city.gov",
+    "passwordHash": "f746f370bd82925b95b5a2ed40996e8da71bc736eab23a68068e648a4cf21936f11cc29421f40d0f382552c239a60a61b7fffd6c71dc2642c60de71cc30c99a8",
+    "name": "Commissioner V. Rao",
+    "role": "DEPARTMENT",
+    "departmentId": "all",
+    "departmentName": "Central Municipal Administration",
+    "title": "City Commissioner (Super Admin)",
+    "createdAt": "2026-10-29T17:13:09.301Z"
+  },
+  {
+    "id": "usr_cit_1793294401398",
+    "email": "prasadkhot567@gmail.com",
+    "passwordHash": "ab26e1366341bf762ed7ff3a234b60dd8bdc89f22942a3c518600fa6755d637f36b96fd76378b8eda5b863d617edbf3dfe252465f8f049d688e12f7fc55b42b5",
+    "name": "prasadkhot567",
+    "phone": "",
+    "role": "CITIZEN",
+    "departmentId": null,
+    "departmentName": null,
+    "isEmailVerified": true,
+    "createdAt": "2026-10-29T17:20:01.400Z"
+  }
+]

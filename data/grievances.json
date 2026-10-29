@@ -1,0 +1,420 @@
+[
+  {
+    "id": "GRV-2026-8F8F96",
+    "createdAt": "2026-10-29T09:45:22.746Z",
+    "updatedAt": "2026-10-29T09:59:53.635Z",
+    "status": "IN_PROGRESS",
+    "passkeyHint": "Passkey: PASS-LQD7-9DSN",
+    "encryptedData": {
+      "ciphertext": "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",
+      "iv": "LnpARrRf9J/s6j/e",
+      "authTag": "",
+      "encryptedSymmetricKeyForDept": "YYwm/udAoU+wEl7Agoa9W5Q0eZU5/D4jrmfpJL33/zv0/z8ZKjgu6434few37Ww/WV4yqvxy7sZTmhfe2vzDzVIq4vDsx9efBmIWpCQxYITIQx18peLRvf8oqrVtr5L5yaz3S+o4m8gfcHUwUwB5WDAS3NygcVuixKEgNwB20ntlME1DYMZRi0xZIfGPudQfVHps4YhmO/O4Bhl3DzbXBUAwz3h/P4rr7NiMnQxYUDi3PLtok8BYuA31evmut9aa7BWi/DzJDfrVEiQCfpBWtUb0A6gPCsjqmz+jiOiiUPQW3wuOquPiSRdVdITOzEoV+skY3P7tkURTGmubjo9vgA==",
+      "encryptedSymmetricKeyForCitizen": "hvf2WVuAr5BipgqCQRJZEJteW+S0BJoawBmT76zRxyE=",
+      "citizenPasskeyHash": "974d6f0f3582a31411b57f7829c62c5b699468eb629bb662f27515a1f563ea04"
+    },
+    "aiTriage": {
+      "engine": "Built-in Neural Triage Engine v2.4",
+      "detectedIssue": "Severe Asphalt Pothole with Active Traffic Hazard",
+      "category": "road_admin",
+      "department": {
+        "id": "road_admin",
+        "name": "Road Administration & Transport Department",
+        "officerInCharge": "Er. R. Sharma (Chief Maintenance Engineer)",
+        "email": "roads-triage@city.gov",
+        "jurisdiction": "Highways, arterial roads, asphalt pavements, traffic markings, storm culverts"
+      },
+      "criticality": "HIGH",
+      "criticalityReasoning": "High-risk road depression situated in active transit corridor. Significant risk of two-wheeler vehicle imbalance, rim fractures, and sudden lane-change collisions.",
+      "confidence": 0.98,
+      "deadlineHours": 48,
+      "deadlineLabel": "48 Hours (2 Days)",
+      "deadlineAt": "2026-10-31T09:44:40.688Z",
+      "visualMarkers": [
+        "Irregular asphalt depression",
+        "Exposed gravel aggregate",
+        "Pavement fracture perimeter",
+        "Standing murky water pocket"
+      ],
+      "recommendedAction": "Dispatch Road Maintenance Crew with asphalt cold-mix compactor and temporary reflective cones.",
+      "analyzedAt": "2026-10-29T09:44:40.688Z"
+    },
+    "resolution": {
+      "resolvedAt": null,
+      "resolvedBy": null,
+      "resolutionNotes": null,
+      "proofImageUrl": null
+    },
+    "auditLog": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-10-29T09:45:22.746Z",
+        "note": "Citizen submitted grievance with client-side AES-256-GCM encryption."
+      },
+      {
+        "status": "AI_TRIAGED",
+        "timestamp": "2026-10-29T09:45:22.746Z",
+        "note": "AI identified \"Severe Asphalt Pothole with Active Traffic Hazard\" with 98% confidence. Criticality: HIGH."
+      },
+      {
+        "status": "ASSIGNED",
+        "timestamp": "2026-10-29T09:45:22.746Z",
+        "note": "Auto-routed to Road Administration & Transport Department. Strict SLA deadline set: 48 Hours (2 Days) (by 31/10/2026, 3:14:40 pm)."
+      }
+    ],
+    "statusNote": "Status changed to IN_PROGRESS. Response team dispatched to location.",
+    "citizenEmail": "citizen@civic.gov"
+  },
+  {
+    "id": "GRV-2026-5AE801",
+    "createdAt": "2026-10-29T09:39:47.192Z",
+    "updatedAt": "2026-10-29T09:39:47.192Z",
+    "status": "ASSIGNED",
+    "passkeyHint": "Generated Citizen Passkey",
+    "encryptedData": {
+      "ciphertext": "Q424M4Qgwt6dxStuczGbnI/qyAKv3vCen2KHKZztY8oaP2z0rgW4UNItE5hbDcdKk2zUuCRh6qzru53Ju5k4SA685pWQghXvBYz57xuNJHd2KGWM19gxuNu8pFN0Wt1aUPyscDQytA37vg4nptzI9Q+roe1xRGYUOqtIgIN+my7p2gmvIYt6KUUHs0gteWzNGhOaRcgivmXYN7sSFZk9z6ymIRreUAabscD5wmCVlRE3J1iyW6CAGZ6FiVH1MfrQevNcPdsrwzEwhAhfFgb/8A50vVllpiUrtRPuSS6OqbxORPEotYTWVBBtr9UsOVAv5AkhLmNtk0NpgF7YWR47BdtbEH8KixExZ1ECZEtRySkcDKlVGpzxYdH2dAKlDsq5Nsb4+uXQIcsT4Uq2/t5F4bSr/vWpGpLGuaggLK7NyQpnBRJ/vXDE4PQIMA==",
+      "iv": "fXcFl0H9LWgHIUQe",
+      "authTag": "2p2K/lqE4I8EbEyG0+Rbaw==",
+      "encryptedSymmetricKeyForDept": "d75gs0lyBvYNouIxy3wtNyDAy5YgvetGY4rnRQkHFFxmZqp9r2NVNhhRDWv9ZUhMusquBSMYgmfX3o2Y63E+mCJmv0ItuvkA1RAoi0k4ldx7Pf0SrcVnjuuaEI2KElNtdwCiC8Gvn4lQvbkzqJ2sW7I0UNjVBs1HZ88FTUmyTUuzhcFTlq2rLnUIyznaRbHHHXhKoC6KU7+GCLYkQxuqV+RxtvJ7nr8MpfJyiGkKcPQ6WNb2dUT9MKW8Lxrn+9UF1a9m5TWVrNTa1xT3WLG5XRObf9XBIhH69Eo5cF12iPixVyfXslDuwW/SCFQCxDK50CefEJpu8wprOv/mcSOoeA==",
+      "encryptedSymmetricKeyForCitizen": "2DkF0PdAU+enej+W+uXV9fNBLbeCOVdk8zk16wtK3J0=",
+      "citizenPasskeyHash": "bb01f148bfc074f3152bf268cd90d90e8d15e24a585e9a8eaeebc9f51c42855f"
+    },
+    "aiTriage": {
+      "engine": "Built-in Neural Triage Engine v2.4",
+      "detectedIssue": "Severe Asphalt Pothole with Active Traffic Hazard",
+      "category": "road_admin",
+      "department": {
+        "id": "road_admin",
+        "name": "Road Administration & Transport Department",
+        "officerInCharge": "Er. R. Sharma (Chief Maintenance Engineer)",
+        "email": "roads-triage@city.gov",
+        "jurisdiction": "Highways, arterial roads, asphalt pavements, traffic markings, storm culverts"
+      },
+      "criticality": "HIGH",
+      "criticalityReasoning": "High-risk road depression situated in active transit corridor. Significant risk of two-wheeler vehicle imbalance, rim fractures, and sudden lane-change collisions.",
+      "confidence": 0.95,
+      "deadlineHours": 48,
+      "deadlineLabel": "48 Hours (2 Days)",
+      "deadlineAt": "2026-10-31T09:39:47.182Z",
+      "visualMarkers": [
+        "Irregular asphalt depression",
+        "Exposed gravel aggregate",
+        "Pavement fracture perimeter",
+        "Standing murky water pocket"
+      ],
+      "recommendedAction": "Dispatch Road Maintenance Crew with asphalt cold-mix compactor and temporary reflective cones.",
+      "analyzedAt": "2026-10-29T09:39:47.182Z"
+    },
+    "resolution": {
+      "resolvedAt": null,
+      "resolvedBy": null,
+      "resolutionNotes": null,
+      "proofImageUrl": null
+    },
+    "auditLog": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-10-29T09:39:47.192Z",
+        "note": "Citizen submitted grievance with client-side AES-256-GCM encryption."
+      },
+      {
+        "status": "AI_TRIAGED",
+        "timestamp": "2026-10-29T09:39:47.192Z",
+        "note": "AI identified \"Severe Asphalt Pothole with Active Traffic Hazard\" with 95% confidence. Criticality: HIGH."
+      },
+      {
+        "status": "ASSIGNED",
+        "timestamp": "2026-10-29T09:39:47.192Z",
+        "note": "Auto-routed to Road Administration & Transport Department. Strict SLA deadline set: 48 Hours (2 Days) (by 31/10/2026, 3:09:47 pm)."
+      }
+    ],
+    "citizenEmail": "citizen@civic.gov"
+  },
+  {
+    "id": "GRV-2026-1004",
+    "createdAt": "2026-10-28T15:33:05.946Z",
+    "updatedAt": "2026-10-29T09:33:05.946Z",
+    "status": "RESOLVED",
+    "passkeyHint": "Sample passkey: PASS-ELECTRIC_WIRE-2026",
+    "encryptedData": {
+      "ciphertext": "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",
+      "iv": "HuFz+I8f1Uu443Q4",
+      "authTag": "PY7FvCTu2vx9dLFnB2fF/Q==",
+      "encryptedSymmetricKeyForDept": "ioGFdAEbEzzhDlAhhhtUP6UlQhTpcIrHAqsBTgn3GDNGAZDf91L8HZh5VhvyCIT7EGqQr14bc6tI7zYqPxLBQ8BY8RUUjy8q/of/8JM/pkQ6L1SyAGkyma8Yp0Rj2XKE6519+PjAqrVgTH99/WRvGK4uz0t4LyH6ebDJ1cm50xKU35sdIObMP2/eiBzehBUV6+Pz1hMq1ZFu8HxyiNd6YvIzXwJZQG0UpLmO0WMBpo56aor8TjYL5LrboTkxgSd9GDju7FiN4BKsdEy2KeTVKlFLJTuw/QCCp/5k8hhAx22DQzNcxYfcAaBO/JHArVifhpB3LytJr9JU1RGqIiLd/Q==",
+      "encryptedSymmetricKeyForCitizen": "XuWZjnPkIvCecAw/fuYvKGC5+xpsPjbmZi/UClcHUwM=",
+      "citizenPasskeyHash": "de7856f582b4314785c99287e34980e53b953423acb1174e3e0af315f036849e"
+    },
+    "aiTriage": {
+      "engine": "Built-in Neural Triage Engine v2.4",
+      "detectedIssue": "Severed Overhead Conductor / Live Electrical Hazard",
+      "category": "power_board",
+      "department": {
+        "id": "power_board",
+        "name": "Electricity & Public Infrastructure Board",
+        "officerInCharge": "Chief Inspector M. Patel (Grid Safety & Lighting)",
+        "email": "grid-safety@powerboard.gov",
+        "jurisdiction": "Overhead high-voltage lines, distribution transformers, streetlamps, utility poles"
+      },
+      "criticality": "CRITICAL",
+      "criticalityReasoning": "Exposed electrical conductor presenting acute risk of electrocution, ground fault arching, and secondary structural fire hazards to nearby civilians.",
+      "confidence": 0.97,
+      "deadlineHours": 6,
+      "deadlineLabel": "6 Hours",
+      "deadlineAt": "2026-10-29T15:33:05.946Z",
+      "visualMarkers": [
+        "Disconnected high-voltage aerial conductor",
+        "Intermittent arc-flash ionization",
+        "Utility pole structural tilt",
+        "Unprotected pedestrian exposure zone"
+      ],
+      "recommendedAction": "De-energize Feeder Line immediately from Substation Alpha; scramble Rapid Electrical Linemen Unit with insulated cherry picker.",
+      "analyzedAt": "2026-10-29T09:33:05.946Z"
+    },
+    "resolution": {
+      "resolvedAt": "2026-10-29T09:33:05.946Z",
+      "resolvedBy": "Rapid Response Team Unit 3",
+      "resolutionNotes": "Snapped high-voltage line safely isolated, ground cleared, and replacement cable tensioned. Power restored safely.",
+      "proofImageUrl": null
+    },
+    "auditLog": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-10-28T15:33:05.946Z",
+        "note": "Citizen submitted grievance with client-side AES-256-GCM encryption."
+      },
+      {
+        "status": "AI_TRIAGED",
+        "timestamp": "2026-10-28T15:33:05.946Z",
+        "note": "AI identified \"Severed Overhead Conductor / Live Electrical Hazard\". Criticality: CRITICAL."
+      },
+      {
+        "status": "ASSIGNED",
+        "timestamp": "2026-10-28T15:33:05.946Z",
+        "note": "Routed to Electricity & Public Infrastructure Board. Deadline: 6 Hours."
+      },
+      {
+        "status": "RESOLVED",
+        "timestamp": "2026-10-29T09:33:05.946Z",
+        "note": "Issue verified as resolved by Field Supervisor."
+      }
+    ],
+    "citizenEmail": "citizen@civic.gov"
+  },
+  {
+    "id": "GRV-2026-1003",
+    "createdAt": "2026-10-28T21:33:05.945Z",
+    "updatedAt": "2026-10-29T09:33:05.945Z",
+    "status": "ASSIGNED",
+    "passkeyHint": "Sample passkey: PASS-WATER_LEAK-2026",
+    "encryptedData": {
+      "ciphertext": "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",
+      "iv": "qJMwXN+7yCjqHibm",
+      "authTag": "UbV4IserVtpfMmUcOMN5OA==",
+      "encryptedSymmetricKeyForDept": "dE7iR3SRWNvZqxTajG6WaQVXZ+f2gBbIYRhnNeE5Eoa/5iGiQNXvHb7SQ0zv/gg6TUs5FJr6uuJDlYhqgXmWmXAm7pp5NY4Lbie6Tvq34maJrWtR1/foO2eKG704JePP5nbJ2rsbCyFCnJvj1K7GRK1kVi7HK+Z4ku5jUMrAqFQzebhfV5M4x1vYh0qmHYj4jSrI2B4go0ncrEy/UywSuiRR9n24wpzYrlGx9FVC5/zfZJS/6hgaWhV2AnZN/9Th/b3+yNFdZk5OPMpgvqRSHuEXRc6qrbuwNzp55RzhUE4lRsS/ic5TeABm1Oda2VUVKdJxUgUhk10mdshNCVY9LQ==",
+      "encryptedSymmetricKeyForCitizen": "Sdtbw6HxBAdprb1AX0ICB1jP7pD9i2eT8BBQAvHIQVc=",
+      "citizenPasskeyHash": "ed3b4fafb487b46b73609aaf62ff72e253cbeb61e2130dc7f5f50d8d68930740"
+    },
+    "aiTriage": {
+      "engine": "Built-in Neural Triage Engine v2.4",
+      "detectedIssue": "Pressurized Water Distribution Pipeline Rupture",
+      "category": "water_board",
+      "department": {
+        "id": "water_board",
+        "name": "Water Supply & Sewerage Board",
+        "officerInCharge": "Er. K. Nair (Executive Engineer, Hydraulic Distribution)",
+        "email": "water-emergencies@waterboard.gov",
+        "jurisdiction": "Drinking water transmission pipelines, distribution mains, sewage & storm drainage networks"
+      },
+      "criticality": "HIGH",
+      "criticalityReasoning": "Active pressurized water main rupture resulting in clean drinking water loss, soil erosion under the road foundation, and potential urban street waterlogging.",
+      "confidence": 0.97,
+      "deadlineHours": 24,
+      "deadlineLabel": "24 Hours (1 Day)",
+      "deadlineAt": "2026-10-30T09:33:05.945Z",
+      "visualMarkers": [
+        "High-volume clean water expulsion plume",
+        "Extensive surface pooling & curb overflow",
+        "Sub-pavement hydraulic cavity risk",
+        "Hydraulic pressure cavitation"
+      ],
+      "recommendedAction": "Isolate Zone Gate Valve 14-B; dispatch hydraulic repair van with trench de-watering pump and 12-inch pipe coupling.",
+      "analyzedAt": "2026-10-29T09:33:05.945Z"
+    },
+    "resolution": {
+      "resolvedAt": null,
+      "resolvedBy": null,
+      "resolutionNotes": null,
+      "proofImageUrl": null
+    },
+    "auditLog": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-10-28T21:33:05.945Z",
+        "note": "Citizen submitted grievance with client-side AES-256-GCM encryption."
+      },
+      {
+        "status": "AI_TRIAGED",
+        "timestamp": "2026-10-28T21:33:05.945Z",
+        "note": "AI identified \"Pressurized Water Distribution Pipeline Rupture\". Criticality: HIGH."
+      },
+      {
+        "status": "ASSIGNED",
+        "timestamp": "2026-10-28T21:33:05.945Z",
+        "note": "Routed to Water Supply & Sewerage Board. Deadline: 24 Hours (1 Day)."
+      }
+    ],
+    "citizenEmail": "citizen@civic.gov"
+  },
+  {
+    "id": "GRV-2026-1002",
+    "createdAt": "2026-10-29T03:33:05.943Z",
+    "updatedAt": "2026-10-29T09:41:28.724Z",
+    "status": "RESOLVED",
+    "passkeyHint": "Sample passkey: PASS-GARBAGE-2026",
+    "encryptedData": {
+      "ciphertext": "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",
+      "iv": "rhEkmhMb6zbZgGMK",
+      "authTag": "ZJo7TyHpvpyvv6Kr6gqBTg==",
+      "encryptedSymmetricKeyForDept": "GDwCQNPn6tA2xNs3Ei4/wwon0NpJfibj/8ZnyuzrEqHTuVOp7+Pc1vBIkUeUeJmxpc5GJthtFMdinlYKHy2N1uZPN7n54NWwApjgv2u6pqY5vrCpH691x6bUC9yLRXQOln5fPIPMCITQfv6KF5Ipw35AT6HRQriOzgtjJ5fdjWk5kdfdq7DlPOy0rJn7OOnxL1z7let10DqQFuZGLS2L+iR0/u1fXrV8XGODbdMQ86DuY3dw+F4fj1a+BuboudQhJ8PEQBz0npqcYDjBeyGEteCE2Jo71vwmgNa+CIu1s50rd9UGOnu5qRDYqw5zZIcLbNBTzxrANuQbyL6lDUQ8TQ==",
+      "encryptedSymmetricKeyForCitizen": "ZBjh7ZVcoVwVBQxjylg1s1gGrRGSIO54dgbQRuSkRU8=",
+      "citizenPasskeyHash": "bf7de3eafb956a665e51272da3259b8c4b2caf61388d9f90ae42284c6583c489"
+    },
+    "aiTriage": {
+      "engine": "Built-in Neural Triage Engine v2.4",
+      "detectedIssue": "Accumulated Municipal Solid Waste & Garbage Spill",
+      "category": "municipal_corp",
+      "department": {
+        "id": "municipal_corp",
+        "name": "Municipal Solid Waste & Sanitation Corporation",
+        "officerInCharge": "Dr. A. Verma (Sanitation & Public Health Commissioner)",
+        "email": "sanitation@municipalcorp.gov",
+        "jurisdiction": "Solid waste collection, community dumpsters, street sweeping, bio-hazard removal"
+      },
+      "criticality": "HIGH",
+      "criticalityReasoning": "Uncollected organic and non-biodegradable waste accumulation posing imminent public hygiene hazards, vector proliferation, and odor nuisance in public zone.",
+      "confidence": 0.97,
+      "deadlineHours": 48,
+      "deadlineLabel": "48 Hours (2 Days)",
+      "deadlineAt": "2026-10-31T09:33:05.943Z",
+      "visualMarkers": [
+        "Multi-category plastic and packaging refuse",
+        "Overflowing community container perimeter",
+        "Organic waste decomp signs",
+        "Pedestrian right-of-way encroachment"
+      ],
+      "recommendedAction": "Deploy Municipal Waste Compactor Truck and sanitation disinfection squad to clear site and sanitize ground.",
+      "analyzedAt": "2026-10-29T09:33:05.943Z"
+    },
+    "resolution": {
+      "resolvedAt": "2026-10-29T09:41:28.724Z",
+      "resolvedBy": "Sanitation Squad #12",
+      "resolutionNotes": "Compactor truck deployed, 4.2 tons of solid waste cleared and street disinfected.",
+      "proofImageUrl": null
+    },
+    "auditLog": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-10-29T03:33:05.943Z",
+        "note": "Citizen submitted grievance with client-side AES-256-GCM encryption."
+      },
+      {
+        "status": "AI_TRIAGED",
+        "timestamp": "2026-10-29T03:33:05.943Z",
+        "note": "AI identified \"Accumulated Municipal Solid Waste & Garbage Spill\". Criticality: HIGH."
+      },
+      {
+        "status": "ASSIGNED",
+        "timestamp": "2026-10-29T03:33:05.943Z",
+        "note": "Routed to Municipal Solid Waste & Sanitation Corporation. Deadline: 48 Hours (2 Days)."
+      },
+      {
+        "status": "IN_PROGRESS",
+        "timestamp": "2026-10-29T09:33:05.943Z",
+        "note": "Field crew dispatched with machinery to site."
+      }
+    ],
+    "statusNote": "Issue marked as RESOLVED by Sanitation Squad #12. Notes: \"Compactor truck deployed, 4.2 tons of solid waste cleared and street disinfected.\"",
+    "citizenEmail": "citizen@civic.gov"
+  },
+  {
+    "id": "GRV-2026-1001",
+    "createdAt": "2026-10-29T09:33:05.940Z",
+    "updatedAt": "2026-10-29T09:58:09.104Z",
+    "status": "RESOLVED",
+    "passkeyHint": "Sample passkey: PASS-POTHOLE-2026",
+    "encryptedData": {
+      "ciphertext": "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",
+      "iv": "SThBBzyqhgpUdS65",
+      "authTag": "c8FTT05r8pcJ2NzI6770jA==",
+      "encryptedSymmetricKeyForDept": "kKTTvC5cP6SDRDqkip0MM0AxqZrN67Z9uPdjiDk8Si+NNHAJHmCzlWdMn5wGfIeYfF8bSBz9TwkGcO6sIOGj+e+K18UvIqzXfyWAz6AyIDAmeUXnRLiUOKV9ZLKkWLbevQMwmgN7Jhuzf+c3dvexn5JB/FMaSc4w8pffm3Lseen9PGvOoC2cBhhX5z+9cb3nY5E606UlzoI0yb9w6M3jR+hXkcsvQK1d6Rc9RiDUlwHkPkH/vPPsGJ4u3iKcyBddbCvJNZ8us0qB27kMtylY3mczByWEXLTvu2L21zpB7cmx5BVEPrnEMz+9l2aGWJjsPe3z5UqBP15eFJAN2pt7ew==",
+      "encryptedSymmetricKeyForCitizen": "tGsCChoQ4MwatLeG3eAu4q2F3j4g4eCBvDHShYYY3mo=",
+      "citizenPasskeyHash": "94412c6161d6ef0c2d88ea3413ff392ec371f0fefa977db35a4f87c90f5db48b"
+    },
+    "aiTriage": {
+      "engine": "Built-in Neural Triage Engine v2.4",
+      "detectedIssue": "Severe Asphalt Pothole with Active Traffic Hazard",
+      "category": "road_admin",
+      "department": {
+        "id": "road_admin",
+        "name": "Road Administration & Transport Department",
+        "officerInCharge": "Er. R. Sharma (Chief Maintenance Engineer)",
+        "email": "roads-triage@city.gov",
+        "jurisdiction": "Highways, arterial roads, asphalt pavements, traffic markings, storm culverts"
+      },
+      "criticality": "HIGH",
+      "criticalityReasoning": "High-risk road depression situated in active transit corridor. Significant risk of two-wheeler vehicle imbalance, rim fractures, and sudden lane-change collisions.",
+      "confidence": 0.97,
+      "deadlineHours": 48,
+      "deadlineLabel": "48 Hours (2 Days)",
+      "deadlineAt": "2026-10-31T09:33:05.940Z",
+      "visualMarkers": [
+        "Irregular asphalt depression",
+        "Exposed gravel aggregate",
+        "Pavement fracture perimeter",
+        "Standing murky water pocket"
+      ],
+      "recommendedAction": "Dispatch Road Maintenance Crew with asphalt cold-mix compactor and temporary reflective cones.",
+      "analyzedAt": "2026-10-29T09:33:05.940Z"
+    },
+    "resolution": {
+      "resolvedAt": "2026-10-29T09:58:09.103Z",
+      "resolvedBy": "Rapid Road Patching Crew #4",
+      "resolutionNotes": "Asphalt cold-mix roller compaction completed. Edge bitumen sealant applied.",
+      "proofImageUrl": "data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgODAwIDYwMCIgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJyb2FkR3JhZFJlcyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMmQzNDM2IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxZTI3MmUiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJwYXRjaEdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMTExMTExIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxYzFjMWMiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8IS0tIFJvYWQgU3VyZmFjZSAoSWRlbnRpY2FsIGJhY2tncm91bmQpIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSJ1cmwoI3JvYWRHcmFkUmVzKSIgLz4KICAKICA8IS0tIFJvYWQgQ2VudGVybGluZSByZXN0b3JlZCAtLT4KICA8bGluZSB4MT0iNDAwIiB5MT0iMCIgeDI9IjQwMCIgeTI9IjEyMCIgc3Ryb2tlPSIjZjFjNDBmIiBzdHJva2Utd2lkdGg9IjE0IiBzdHJva2UtZGFzaGFycmF5PSI0MCwzMCIgb3BhY2l0eT0iMC45IiAvPgogIDxsaW5lIHgxPSI0MDAiIHkxPSIzNjAiIHgyPSI0MDAiIHkyPSI2MDAiIHN0cm9rZT0iI2YxYzQwZiIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWRhc2hhcnJheT0iNDAsMzAiIG9wYWNpdHk9IjAuOSIgLz4KICAKICA8IS0tIEZyZXNoIFJlY3Rhbmd1bGFyIC8gRW5naW5lZXJlZCBBc3BoYWx0IFBhdGNoIChGdWxseSBDb21wYWN0ZWQgJiBMZXZlbGVkKSAtLT4KICA8cmVjdCB4PSIyNTAiIHk9IjIxMCIgd2lkdGg9IjMyMCIgaGVpZ2h0PSIyMTAiIHJ4PSIxMiIgZmlsbD0idXJsKCNwYXRjaEdyYWQpIiBzdHJva2U9IiMwOTBhMGEiIHN0cm9rZS13aWR0aD0iNCIgLz4KICAKICA8IS0tIFJvbGxlciBDb21wYWN0b3IgVGV4dHVyZSBsaW5lcyAoc2hvd3MgcHJvb2Ygb2YgbWFjaGluZSBjb21wYWN0aW9uKSAtLT4KICA8bGluZSB4MT0iMjYwIiB5MT0iMjUwIiB4Mj0iNTYwIiB5Mj0iMjUwIiBzdHJva2U9IiMyNTI1MjUiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjYwIiB5MT0iMjkwIiB4Mj0iNTYwIiB5Mj0iMjkwIiBzdHJva2U9IiMyNTI1MjUiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjYwIiB5MT0iMzMwIiB4Mj0iNTYwIiB5Mj0iMzMwIiBzdHJva2U9IiMyNTI1MjUiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjYwIiB5MT0iMzcwIiB4Mj0iNTYwIiB5Mj0iMzcwIiBzdHJva2U9IiMyNTI1MjUiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjYwIiB5MT0iNDAwIiB4Mj0iNTYwIiB5Mj0iNDAwIiBzdHJva2U9IiMyNTI1MjUiIHN0cm9rZS13aWR0aD0iMyIgLz4KCiAgPCEtLSBCaXR1bWlub3VzIEpvaW50IFNlYWxhbnQgTGluZSBhcm91bmQgYm9yZGVyIC0tPgogIDxyZWN0IHg9IjI0NiIgeT0iMjA2IiB3aWR0aD0iMzI4IiBoZWlnaHQ9IjIxOCIgcng9IjE0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iNSIgb3BhY2l0eT0iMC45IiAvPgoKICA8IS0tIFJvYWQgQWRtaW5pc3RyYXRpb24gVmVyaWZpY2F0aW9uIEJhZGdlIC0tPgogIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjM4MCIgaGVpZ2h0PSI1MCIgcng9IjgiIGZpbGw9IiMwMDAwMDAiIG9wYWNpdHk9IjAuODUiIC8+CiAgPHRleHQgeD0iMzUiIHk9IjUyIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyZWQ1NzMiPlBST09GOiBBU1BIQUxUIFBBVENIIENPTVBBQ1RFRDwvdGV4dD4KICA8dGV4dCB4PSI1OTAiIHk9IjU2MCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMmVkNTczIj7inJMgWkVSTyBERUZFQ1QgVklTSUJMRTwvdGV4dD4KPC9zdmc+Cg==",
+      "verificationReport": {
+        "engine": "Built-in Neural Verification Inspector v2.4",
+        "verificationStatus": "VERIFIED",
+        "verificationScore": 0.95,
+        "locationMatchScore": 0.96,
+        "locationConsistencyNotes": "Road yellow centerline orientation and asphalt aggregate background align with the original incident photo.",
+        "remediationEvidence": [
+          "Cavity filled with uniform bitumen cold-mix asphalt",
+          "Mechanical compaction roller striations verified",
+          "Perimeter joint bitumen sealant edge continuous",
+          "Zero standing water or exposed gravel aggregate remaining"
+        ],
+        "inspectorSummary": "Defect remediation verified. Photo proof confirms the issue at \"Highways, arterial roads, asphalt pavements, traffic markings, storm culverts\" has been completely resolved to municipal standards.",
+        "verifiedAt": "2026-10-29T09:58:09.103Z"
+      }
+    },
+    "auditLog": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-10-29T09:33:05.940Z",
+        "note": "Citizen submitted grievance with client-side AES-256-GCM encryption."
+      },
+      {
+        "status": "AI_TRIAGED",
+        "timestamp": "2026-10-29T09:33:05.940Z",
+        "note": "AI identified \"Severe Asphalt Pothole with Active Traffic Hazard\". Criticality: HIGH."
+      },
+      {
+        "status": "ASSIGNED",
+        "timestamp": "2026-10-29T09:33:05.940Z",
+        "note": "Routed to Road Administration & Transport Department. Deadline: 48 Hours (2 Days)."
+      }
+    ],
+    "statusNote": "Officially RESOLVED & VERIFIED by AI Vision Inspector (Score: 95%, Location Match: 96%). Squad: \"Rapid Road Patching Crew #4\". Notes: \"Asphalt cold-mix roller compaction completed. Edge bitumen sealant applied.\"",
+    "citizenEmail": "citizen@civic.gov"
+  }
+]

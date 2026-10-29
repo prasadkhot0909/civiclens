@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicSense AI - 2-Portal Citizen Grievance & Department Triage System</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#0b0f19] text-gray-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- ================= TOP HEADER & NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 border-b border-gray-800/80 glass-panel backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('landing')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-400 p-0.5 shadow-lg shadow-blue-500/20">
+          <div class="w-full h-full bg-gray-950 rounded-[10px] flex items-center justify-center">
+            <span class="text-lg">🏛️</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-black text-lg tracking-tight bg-gradient-to-r from-white via-gray-100 to-gray-400 bg-clip-text text-transparent">CivicSense</span>
+            <span id="current-portal-badge" class="text-[10px] font-mono font-bold bg-blue-600/30 text-blue-400 border border-blue-500/40 px-2 py-0.5 rounded-full">
+              Citizen Portal
+            </span>
+          </div>
+          <span class="text-[11px] text-gray-400 font-medium block -mt-0.5">Municipal AI Grievance & Triage Platform</span>
+        </div>
+      </div>
+
+      <!-- Role-Based Navigation Tabs -->
+      <nav id="main-nav-bar" class="hidden md:flex items-center gap-1 bg-gray-900/80 p-1.5 rounded-2xl border border-gray-800">
+        <!-- Citizen Tabs -->
+        <button id="nav-tab-submit" data-tab="submit" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-lg shadow-blue-600/30 transition-all flex items-center gap-1.5">
+          <span>📝</span> Submit Grievance
+        </button>
+        <button id="nav-tab-my-grievances" data-tab="my-grievances" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-200 transition-all flex items-center gap-1.5 hidden">
+          <span>📋</span> My Grievances
+        </button>
+        <button id="nav-tab-track" data-tab="track" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-200 transition-all flex items-center gap-1.5">
+          <span>🔍</span> Track Status
+        </button>
+
+        <!-- Department Tabs (RESTRICTED TO DEPARTMENT REPRESENTATIVES ONLY) -->
+        <button id="nav-tab-dept" data-tab="dept" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-200 transition-all flex items-center gap-1.5 hidden">
+          <span>🏛️</span> Department Console
+        </button>
+        <button id="nav-tab-analytics" data-tab="analytics" class="nav-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-200 transition-all flex items-center gap-1.5 hidden">
+          <span>📊</span> City Analytics
+        </button>
+      </nav>
+
+      <!-- Right Auth & Settings Widget -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Logged In User Profile Widget -->
+        <div id="auth-user-widget" class="hidden flex items-center gap-2.5 bg-gray-900/90 px-3 py-1.5 rounded-xl border border-gray-800">
+          <div class="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-xs font-bold text-blue-300">
+            👤
+          </div>
+          <div class="text-left">
+            <span id="auth-user-name" class="text-xs font-bold text-gray-100 block truncate max-w-[120px]">User</span>
+            <span id="auth-user-role-label" class="text-[10px] text-gray-400 block -mt-0.5 truncate max-w-[120px]">Role</span>
+          </div>
+          <button onclick="userLogout()" title="Log Out" class="text-gray-400 hover:text-red-400 text-xs font-bold px-2 py-1 rounded hover:bg-gray-800 transition-colors">
+            Exit
+          </button>
+        </div>
+
+        <!-- Guest Login Buttons (When not logged in) -->
+        <div id="auth-guest-widget" class="flex items-center gap-2">
+          <button onclick="openCitizenLoginModal()" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 text-xs font-bold transition-all flex items-center gap-1">
+            <span>👤</span> Citizen Login
+          </button>
+          <button onclick="openDepartmentLoginModal()" class="px-3 py-1.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition-all flex items-center gap-1">
+            <span>🏛️</span> Department Rep
+          </button>
+        </div>
+
+        <!-- AI Engine Status Badge -->
+        <div id="ai-engine-status-badge" class="hidden lg:flex text-[10px] font-mono font-bold text-blue-400 bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-800 items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          Neural Urban Defect Analyzer
+        </div>
+
+        <!-- Settings Button -->
+        <button id="btn-open-settings" title="AI Settings" class="p-2 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-gray-700 text-gray-300 hover:text-white transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+    
+    <!-- Ambient glow behind cards -->
+    <div class="absolute top-10 left-1/4 w-96 h-96 ambient-glow-blue pointer-events-none rounded-full blur-3xl -z-10"></div>
+    <div class="absolute top-40 right-1/4 w-96 h-96 ambient-glow-green pointer-events-none rounded-full blur-3xl -z-10"></div>
+
+    <!-- ================= SECTION 0: PORTAL SELECTOR & LANDING VIEW ================= -->
+    <section id="section-landing" class="view-section space-y-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3 py-6">
+        <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-900/30 text-blue-300 border border-blue-700/50 inline-block">
+          Autonomous Municipal Intelligence • Two-Portal Architecture
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+          Select Your Civic Portal
+        </h1>
+        <p class="text-sm text-gray-400">
+          Citizens report urban defects with automated AI triage and SLA deadlines. Department representatives inspect assigned queues and verify photo proofs of repair.
+        </p>
+      </div>
+
+      <!-- 2 Portal Selection Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        
+        <!-- Portal Card 1: Citizen Portal -->
+        <div class="glass-panel-elevated rounded-3xl p-8 border border-blue-500/30 hover:border-blue-500/70 transition-all flex flex-col justify-between space-y-6 group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-600/20 border border-blue-500 text-blue-400 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              👤
+            </div>
+            <div>
+              <span class="text-xs font-mono font-bold text-blue-400 uppercase tracking-wider block">Portal 1</span>
+              <h2 class="text-xl font-extrabold text-white">Citizen Grievance Portal</h2>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Report public infrastructure defects such as road potholes, garbage heaps, broken water lines, and fallen power cables.
+            </p>
+            <ul class="text-xs text-gray-400 space-y-2">
+              <li class="flex items-center gap-2">✓ Upload photo & description of issue</li>
+              <li class="flex items-center gap-2">✓ Instant AI defect identification & SLA deadline</li>
+              <li class="flex items-center gap-2">✓ Track live countdown and view verified Before/After fix</li>
+            </ul>
+          </div>
+
+          <div class="space-y-2 pt-4 border-t border-gray-800">
+            <button onclick="quickLoginCitizen()" 
+                    class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+              <span>🚀</span> Enter as Citizen (Aarav Mehta)
+            </button>
+            <div class="flex items-center justify-between text-[11px] pt-1">
+              <button onclick="openCitizenLoginModal()" class="text-blue-400 hover:underline">Custom Citizen Sign In</button>
+              <button onclick="openCitizenRegisterModal()" class="text-gray-400 hover:text-white">Register Account</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portal Card 2: Department Representative Portal -->
+        <div class="glass-panel-elevated rounded-3xl p-8 border border-amber-500/30 hover:border-amber-500/70 transition-all flex flex-col justify-between space-y-6 group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-amber-600/20 border border-amber-500 text-amber-400 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+              🏛️
+            </div>
+            <div>
+              <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">Portal 2</span>
+              <h2 class="text-xl font-extrabold text-white">Department Official Portal</h2>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Official command console for municipal engineers, sanitation superintendents, hydraulic staff, and grid safety officers.
+            </p>
+            <ul class="text-xs text-gray-400 space-y-2">
+              <li class="flex items-center gap-2">✓ Gated Department Console & Live SLA Timers</li>
+              <li class="flex items-center gap-2">✓ Decrypt citizen evidence & dispatch repair squads</li>
+              <li class="flex items-center gap-2">✓ Upload repair photos for AI resolution verification</li>
+            </ul>
+          </div>
+
+          <div class="space-y-2 pt-4 border-t border-gray-800">
+            <button onclick="openDepartmentLoginModal()" 
+                    class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2">
+              <span>🏛️</span> Sign In as Department Representative
+            </button>
+            <div class="text-[11px] text-gray-400 text-center pt-1">
+              Supports Road Admin, Municipal Corp, Water Board & Power Board
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 1: CITIZEN GRIEVANCE SUBMISSION ================= -->
+    <section id="section-submit" class="view-section hidden space-y-8">
+      
+      <!-- Quick Test Presets (One-Click Scenarios) -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-bold text-gray-200">⚡ One-Click Realistic Civic Test Cases</span>
+            <span class="text-xs text-gray-500">(Click any preset to auto-load photo & defect details)</span>
+          </div>
+        </div>
+
+        <div id="presets-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Main Submission Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Form & Photo Upload (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 space-y-6">
+            <div>
+              <h2 class="text-xl font-extrabold text-white">Submit a Civic Grievance</h2>
+              <p class="text-xs text-gray-400 mt-1">
+                Upload photo evidence of municipal defects (potholes, garbage dumps, pipeline leaks, power lines) for instant AI triage.
+              </p>
+            </div>
+
+            <!-- Image Upload Zone -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider">
+                Defect Photographic Evidence <span class="text-red-400">*</span>
+              </label>
+
+              <!-- Dropzone -->
+              <div id="drop-zone" class="border-2 border-dashed border-gray-700 hover:border-blue-500/70 rounded-2xl p-6 text-center cursor-pointer transition-all bg-gray-950/40 group">
+                <input type="file" id="file-input" accept="image/*" class="hidden" />
+                
+                <div id="upload-placeholder" class="space-y-3">
+                  <div class="w-12 h-12 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-400 mx-auto flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                    📷
+                  </div>
+                  <div>
+                    <span class="text-xs font-bold text-gray-200 block">Click to upload photo or drag & drop</span>
+                    <span class="text-[11px] text-gray-400 mt-0.5 block">JPEG, PNG, WEBP, SVG</span>
+                  </div>
+                </div>
+
+                <!-- Preview Box (Hidden initially) -->
+                <div id="image-preview-container" class="hidden space-y-3">
+                  <div class="relative rounded-xl overflow-hidden border border-gray-700 max-h-64 bg-gray-950 flex items-center justify-center">
+                    <img id="image-preview" src="" alt="Preview" class="max-h-64 object-contain" />
+                    <button type="button" onclick="clearUploadedImage()" class="absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-gray-900/80 hover:bg-red-900 text-[11px] font-bold text-gray-300 hover:text-white border border-gray-700 transition-colors">
+                      ✕ Change Photo
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between text-xs text-gray-400">
+                    <span id="image-preview-title" class="font-medium text-gray-300 truncate"></span>
+                    <span class="text-emerald-400 font-mono text-[11px]">✓ Image Loaded</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Problem Description -->
+            <div class="space-y-2">
+              <label for="input-description" class="block text-xs font-bold text-gray-300 uppercase tracking-wider">
+                Defect Description <span class="text-red-400">*</span>
+              </label>
+              <textarea id="input-description" rows="3" placeholder="Describe the problem (e.g. Deep pothole on road causing motorcycle accidents, garbage dumping, or broken water line gushing on street)..." 
+                        class="w-full glass-input rounded-xl p-3.5 text-xs text-gray-100 placeholder-gray-500 transition-all"></textarea>
+            </div>
+
+            <!-- Location Coordinates / Address -->
+            <div class="space-y-2">
+              <label for="input-location" class="block text-xs font-bold text-gray-300 uppercase tracking-wider">
+                Location / Street Landmark <span class="text-gray-500 font-normal">(Optional)</span>
+              </label>
+              <input type="text" id="input-location" placeholder="e.g. Highway Ring Road, Near Metro Pillar 104" 
+                     class="w-full glass-input rounded-xl p-3.5 text-xs text-gray-100 placeholder-gray-500" />
+            </div>
+
+            <!-- Citizen Details -->
+            <div class="p-4 rounded-2xl bg-gray-900/50 border border-gray-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-300">Citizen Contact Information</span>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="check-anonymous" class="rounded bg-gray-800 border-gray-700 text-blue-600 focus:ring-blue-500" />
+                  <span class="text-[11px] text-gray-400">Submit Anonymously</span>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="text" id="input-name" placeholder="Your Name" class="glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
+                <input type="text" id="input-phone" placeholder="Phone Number (SMS updates)" class="glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <button id="btn-scan-ai" type="button" 
+                      class="px-5 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-bold text-blue-400 border border-blue-500/30 hover:border-blue-500 transition-all flex items-center gap-2 shadow-lg shadow-blue-950/20">
+                <span>🤖</span> Run AI Triage Scan
+              </button>
+
+              <button id="btn-submit-grievance" type="button" 
+                      class="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-xs font-bold text-white shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+                <span>🔒</span> Submit Grievance
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Column: Live AI Triage Diagnostic Box (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- AI Diagnosis Card Placeholder -->
+          <div id="ai-triage-preview-card" class="hidden">
+            <!-- Dynamically populated by JS -->
+          </div>
+
+          <!-- Educational Explainer Card -->
+          <div class="glass-panel rounded-3xl p-6 border border-gray-800 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span class="text-blue-400">⚡</span> Automated Department Triage Matrix
+            </h3>
+
+            <div class="space-y-3 text-xs text-gray-400">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-blue-900/40 text-blue-400 flex items-center justify-center font-bold text-[11px] flex-shrink-0 mt-0.5">1</div>
+                <div>
+                  <strong class="text-gray-200 block">Road Administration</strong>
+                  Potholes, asphalt cracks, collapsed pavements, damaged speed breakers.
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-emerald-900/40 text-emerald-400 flex items-center justify-center font-bold text-[11px] flex-shrink-0 mt-0.5">2</div>
+                <div>
+                  <strong class="text-gray-200 block">Municipal Solid Waste Corporation</strong>
+                  Garbage dumps, overflowing community bins, rotting waste, street litter.
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-cyan-900/40 text-cyan-400 flex items-center justify-center font-bold text-[11px] flex-shrink-0 mt-0.5">3</div>
+                <div>
+                  <strong class="text-gray-200 block">Water Supply & Sewerage Board</strong>
+                  Burst water mains, leaking drinking pipelines, sewage overflow, blocked culverts.
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-amber-900/40 text-amber-400 flex items-center justify-center font-bold text-[11px] flex-shrink-0 mt-0.5">4</div>
+                <div>
+                  <strong class="text-gray-200 block">Electricity & Infrastructure Board</strong>
+                  Snapped overhead power cables, sparking transformers, dark streetlamps.
+                </div>
+              </div>
+            </div>
+
+            <!-- Department SLA Guide Reference -->
+            <div class="border-t border-gray-800 pt-3">
+              <span class="text-[11px] font-bold text-gray-300 block mb-2">Automated SLA Deadlines:</span>
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                <div class="bg-gray-900/80 p-2 rounded-lg border border-red-900/40 text-red-300">
+                  CRITICAL: 12 - 24 Hours
+                </div>
+                <div class="bg-gray-900/80 p-2 rounded-lg border border-amber-900/40 text-amber-300">
+                  HIGH: 48 Hours (2 Days)
+                </div>
+                <div class="bg-gray-900/80 p-2 rounded-lg border border-blue-900/40 text-blue-300">
+                  MEDIUM: 4 - 5 Days
+                </div>
+                <div class="bg-gray-900/80 p-2 rounded-lg border border-gray-800 text-gray-400">
+                  LOW: 7 - 10 Days
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 1B: CITIZEN'S MY GRIEVANCES ================= -->
+    <section id="section-my-grievances" class="view-section hidden space-y-6">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+        <div>
+          <h2 class="text-xl font-extrabold text-white">My Submitted Complaints</h2>
+          <p class="text-xs text-gray-400 mt-1">
+            Track all civic issues submitted by your citizen account with real-time field progress.
+          </p>
+        </div>
+        <button onclick="loadMyGrievances()" class="px-3.5 py-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200 border border-gray-700">
+          🔄 Refresh
+        </button>
+      </div>
+
+      <div id="my-grievances-container">
+        <!-- Loaded dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- ================= SECTION 2: CITIZEN GRIEVANCE TRACKING ================= -->
+    <section id="section-track" class="view-section hidden space-y-8">
+      
+      <div class="max-w-2xl mx-auto space-y-6">
+        <div class="text-center space-y-2">
+          <h2 class="text-2xl font-extrabold text-white">Track Your Grievance</h2>
+          <p class="text-xs text-gray-400">
+            Enter your Grievance Reference ID and your Secret Passkey to view live SLA countdown and field updates.
+          </p>
+        </div>
+
+        <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label for="track-input-id" class="block text-xs font-bold text-gray-300">Grievance Reference ID</label>
+              <input type="text" id="track-input-id" placeholder="e.g. GRV-2026-1001" 
+                     class="w-full glass-input rounded-xl p-3 text-xs font-mono text-blue-400 placeholder-gray-500" />
+            </div>
+
+            <div class="space-y-1.5">
+              <label for="track-input-passkey" class="block text-xs font-bold text-gray-300">Citizen Decryption Passkey</label>
+              <input type="text" id="track-input-passkey" placeholder="e.g. PASS-POTHOLE-2026" 
+                     class="w-full glass-input rounded-xl p-3 text-xs font-mono text-emerald-400 placeholder-gray-500" />
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button id="btn-lookup-grievance" onclick="lookupGrievance()" 
+                    class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+              <span>🔍</span> Verify & Track Ticket Status
+            </button>
+          </div>
+        </div>
+
+        <!-- Sample Tracking Helpers -->
+        <div class="p-4 rounded-2xl bg-gray-900/40 border border-gray-800 text-xs text-gray-400">
+          <span class="font-bold text-gray-300 block mb-1.5">Try Tracking Seeded Sample Tickets:</span>
+          <div class="flex flex-wrap gap-2 font-mono text-[11px]">
+            <button onclick="document.getElementById('track-input-id').value='GRV-2026-1001'; document.getElementById('track-input-passkey').value='PASS-POTHOLE-2026'; lookupGrievance();" 
+                    class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-blue-300 border border-gray-700">
+              GRV-2026-1001 (Pothole - Resolved)
+            </button>
+            <button onclick="document.getElementById('track-input-id').value='GRV-2026-1002'; document.getElementById('track-input-passkey').value='PASS-GARBAGE-2026'; lookupGrievance();" 
+                    class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-amber-300 border border-gray-700">
+              GRV-2026-1002 (Garbage)
+            </button>
+            <button onclick="document.getElementById('track-input-id').value='GRV-2026-1003'; document.getElementById('track-input-passkey').value='PASS-WATER_LEAK-2026'; lookupGrievance();" 
+                    class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-gray-700">
+              GRV-2026-1003 (Water Main)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Result View -->
+      <div id="tracking-result-container" class="max-w-3xl mx-auto hidden">
+        <!-- Dynamically populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 3: DEPARTMENT OFFICER CONSOLE (GATED) ================= -->
+    <section id="section-dept" class="view-section hidden space-y-6">
+      
+      <!-- Top Department Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-5">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-xl font-extrabold text-white">Department Officer Triage Console</h2>
+            <span id="dept-ticket-count-badge" class="px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-400 border border-blue-800 font-mono text-xs font-bold">
+              Loading...
+            </span>
+          </div>
+          <p class="text-xs text-gray-400 mt-1">
+            Authorised municipal dashboard. Inspect citizen evidence and submit verified resolution proof photos to close tickets.
+          </p>
+        </div>
+
+        <!-- Refresh Button -->
+        <button onclick="loadDepartmentTickets()" class="px-3.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200 border border-gray-700 flex items-center gap-2 transition-colors">
+          <span>🔄</span> Refresh Queue
+        </button>
+      </div>
+
+      <!-- Department Filter Pills -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button data-dept="all" class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white transition-all">
+          All Departments (Central Queue)
+        </button>
+        <button data-dept="road_admin" class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-800/80 text-gray-400 hover:text-gray-200 border border-gray-700/60 transition-all">
+          🚧 Road Administration
+        </button>
+        <button data-dept="municipal_corp" class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-800/80 text-gray-400 hover:text-gray-200 border border-gray-700/60 transition-all">
+          🗑️ Municipal Solid Waste
+        </button>
+        <button data-dept="water_board" class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-800/80 text-gray-400 hover:text-gray-200 border border-gray-700/60 transition-all">
+          💧 Water Supply & Sewerage
+        </button>
+        <button data-dept="power_board" class="dept-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-800/80 text-gray-400 hover:text-gray-200 border border-gray-700/60 transition-all">
+          ⚡ Electricity & Infrastructure
+        </button>
+      </div>
+
+      <!-- Tickets Container -->
+      <div id="department-tickets-container" class="space-y-4">
+        <!-- Dynamically loaded by JS -->
+      </div>
+
+    </section>
+
+    <!-- ================= SECTION 4: CITY ANALYTICS ================= -->
+    <section id="section-analytics" class="view-section hidden space-y-8">
+      
+      <div class="space-y-2">
+        <h2 class="text-xl font-extrabold text-white">Municipal AI Intelligence & Performance Analytics</h2>
+        <p class="text-xs text-gray-400">
+          City-wide metrics on citizen grievance volumes, departmental routing distribution, and SLA resolution compliance.
+        </p>
+      </div>
+
+      <!-- KPI Numbers Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="glass-panel p-4 rounded-2xl border border-gray-800">
+          <span class="text-xs text-gray-400 font-semibold block mb-1">Total Grievances</span>
+          <div id="stat-total-grievances" class="text-2xl font-black font-mono text-white">0</div>
+          <span class="text-[10px] text-gray-500 mt-1 block">City-wide submissions</span>
+        </div>
+
+        <div class="glass-panel p-4 rounded-2xl border border-gray-800">
+          <span class="text-xs text-gray-400 font-semibold block mb-1">SLA Compliance Rate</span>
+          <div id="stat-sla-rate" class="text-2xl font-black font-mono text-emerald-400">100%</div>
+          <span class="text-[10px] text-emerald-500/80 mt-1 block">Target: &gt; 95%</span>
+        </div>
+
+        <div class="glass-panel p-4 rounded-2xl border border-gray-800">
+          <span class="text-xs text-gray-400 font-semibold block mb-1">Resolved Cases</span>
+          <div id="stat-resolved-count" class="text-2xl font-black font-mono text-blue-400">0</div>
+          <span class="text-[10px] text-gray-500 mt-1 block">Field verified</span>
+        </div>
+
+        <div class="glass-panel p-4 rounded-2xl border border-gray-800">
+          <span class="text-xs text-gray-400 font-semibold block mb-1">Active / In-Progress</span>
+          <div id="stat-active-count" class="text-2xl font-black font-mono text-amber-400">0</div>
+          <span class="text-[10px] text-gray-500 mt-1 block">Under field remediation</span>
+        </div>
+
+        <div class="glass-panel p-4 rounded-2xl border border-gray-800 col-span-2 lg:col-span-1">
+          <span class="text-xs text-gray-400 font-semibold block mb-1">SLA Breached Alerts</span>
+          <div id="stat-breached-count" class="text-2xl font-black font-mono text-red-400">0</div>
+          <span class="text-[10px] text-red-500/80 mt-1 block">Overdue escalation</span>
+        </div>
+      </div>
+
+      <!-- Charts Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Chart 1: Department Workload -->
+        <div class="glass-panel-elevated p-6 rounded-3xl border border-gray-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>🏛️</span> Workload by Department
+            </h3>
+            <span class="text-[11px] font-mono text-gray-400">AI Routed</span>
+          </div>
+          <div class="w-full h-60 relative flex items-center justify-center">
+            <canvas id="chart-dept-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Criticality Breakdown -->
+        <div class="glass-panel-elevated p-6 rounded-3xl border border-gray-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>⚠️</span> Defect Severity Distribution
+            </h3>
+            <span class="text-[11px] font-mono text-gray-400">Risk Assessment</span>
+          </div>
+          <div class="w-full h-60 relative flex items-center justify-center">
+            <canvas id="chart-crit-canvas"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= CITIZEN LOGIN MODAL (EMAIL VERIFICATION + PASSWORD) ================= -->
+  <div id="citizen-login-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-md w-full border border-blue-500/40 space-y-5 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>👤</span> Citizen Portal Sign In
+          </h3>
+          <span class="text-xs text-blue-400">Email Verification Code + Password</span>
+        </div>
+        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white text-sm">✕</button>
+      </div>
+
+      <!-- Verification Code Dispatch Banner (Appears when code is sent) -->
+      <div id="citizen-code-banner" class="hidden p-3 rounded-xl bg-blue-950/80 border border-blue-600/80 text-xs space-y-1.5 animate-pulse">
+        <div class="flex items-center justify-between text-blue-200">
+          <span class="font-bold flex items-center gap-1.5">
+            <span>📧</span> Verification Code Dispatched!
+          </span>
+          <span class="text-[10px] text-gray-400">Valid 15m</span>
+        </div>
+        <div class="flex items-center justify-between bg-blue-900/60 p-2 rounded-lg border border-blue-700/60">
+          <span class="text-xs text-gray-300">Your Code: <strong id="citizen-sent-code-display" class="text-emerald-400 font-mono text-sm tracking-wider">123456</strong></span>
+          <button type="button" onclick="autofillCitizenCode()" class="text-[11px] font-bold text-blue-300 bg-blue-800/80 px-2.5 py-1 rounded hover:bg-blue-700">
+            Auto-Fill
+          </button>
+        </div>
+      </div>
+
+      <form id="citizen-login-form" class="space-y-4">
+        <!-- Email + Send Code Button -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold text-gray-300">Citizen Email Address</label>
+          <div class="flex gap-2">
+            <input type="email" id="citizen-login-email" required placeholder="citizen@civic.gov" value="citizen@civic.gov"
+                   class="flex-1 glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
+            <button type="button" id="btn-send-citizen-code" onclick="requestCitizenVerificationCode()" 
+                    class="px-3.5 py-2.5 rounded-xl bg-blue-600/80 hover:bg-blue-600 text-xs font-bold text-white transition-colors flex items-center gap-1 flex-shrink-0">
+              Send Code
+            </button>
+          </div>
+        </div>
+
+        <!-- 6-Digit Verification Code -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-gray-300">6-Digit Verification Code</label>
+            <span class="text-[10px] text-gray-500 font-mono">Demo bypass: 123456</span>
+          </div>
+          <input type="text" id="citizen-verify-code" required placeholder="Enter 6-digit code (e.g. 849201)" maxlength="6" 
+                 class="w-full glass-input rounded-xl p-3 text-xs font-mono tracking-widest text-emerald-400 placeholder-gray-500" />
+        </div>
+
+        <!-- Password -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold text-gray-300">Account Password</label>
+          <input type="password" id="citizen-login-password" required placeholder="citizen123" value="citizen123"
+                 class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
+          <span class="text-[10px] text-gray-500 block">Default citizen password is: <code class="text-blue-300">citizen123</code></span>
+        </div>
+
+        <button type="submit" id="btn-citizen-submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+          <span>✓</span> Verify Code & Sign In as Citizen
+        </button>
+      </form>
+
+      <!-- Quick 1-Click Demo Citizen Login -->
+      <div class="border-t border-gray-800 pt-3 space-y-2">
+        <span class="text-[11px] text-gray-400 block font-semibold">⚡ Instant Verified Demo Access:</span>
+        <button type="button" onclick="quickLoginCitizen('citizen@civic.gov')" 
+                class="w-full py-2.5 rounded-xl bg-blue-900/30 hover:bg-blue-900/60 border border-blue-700/60 text-xs font-bold text-blue-300 transition-colors flex items-center justify-center gap-1.5">
+          <span>👤</span> Sign In as Aarav Mehta (citizen@civic.gov)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CITIZEN REGISTRATION MODAL ================= -->
+  <div id="citizen-register-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-md w-full border border-blue-500/40 space-y-4">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span>📝</span> Register Citizen Account
+        </h3>
+        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white text-sm">✕</button>
+      </div>
+
+      <form id="citizen-register-form" class="space-y-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-gray-300">Full Name</label>
+          <input type="text" id="reg-name" required placeholder="Aarav Mehta" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
+        </div>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-gray-300">Email Address</label>
+          <input type="email" id="reg-email" required placeholder="you@example.com" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
+        </div>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-gray-300">Phone Number</label>
+          <input type="text" id="reg-phone" placeholder="+91 98765 43210" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
+        </div>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-gray-300">Create Password</label>
+          <input type="password" id="reg-password" required minlength="6" placeholder="At least 6 characters" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all mt-2">
+          Create Account & Log In
+        </button>
+      </form>
+
+      <div class="text-center text-xs text-gray-400 pt-1">
+        Already registered? <button onclick="openCitizenLoginModal()" class="text-blue-400 hover:underline font-semibold">Sign in</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DEPARTMENT REPRESENTATIVE LOGIN MODAL ================= -->
+  <div id="department-login-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-amber-500/50 space-y-5 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🏛️</span> Department Representative Login
+          </h3>
+          <span class="text-xs text-amber-400">Exclusive access to Department Command Console</span>
+        </div>
+        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white text-sm">✕</button>
+      </div>
+
+      <!-- Quick Department Selector Dropdown -->
+      <div class="p-3.5 rounded-2xl bg-amber-950/30 border border-amber-700/50 space-y-1.5">
+        <label class="block text-[11px] font-bold text-amber-300 uppercase tracking-wider">
+          Quick Department Selector (Auto-Fills Credentials)
+        </label>
+        <select id="dept-preset-select" onchange="onDepartmentPresetSelect(this.value)" 
+                class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 bg-gray-900 border border-amber-700/60 focus:border-amber-500">
+          <option value="roads">🚧 Road Administration & Transport (roads@city.gov)</option>
+          <option value="sanitation">🗑️ Municipal Solid Waste Corp (sanitation@city.gov)</option>
+          <option value="water">💧 Water Supply & Sewerage Board (water@city.gov)</option>
+          <option value="power">⚡ Electricity & Grid Safety Board (power@city.gov)</option>
+          <option value="admin">🏛️ City Super Admin - All Departments (admin@city.gov)</option>
+        </select>
+      </div>
+
+      <form id="department-login-form" class="space-y-4">
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold text-gray-300">Official Municipal Email</label>
+          <input type="email" id="dept-login-email" required value="roads@city.gov" placeholder="roads@city.gov" 
+                 class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-gray-300">Department Security Password</label>
+            <label class="flex items-center gap-1.5 text-[11px] text-gray-400 cursor-pointer">
+              <input type="checkbox" onchange="togglePasswordVisibility('dept-login-password')" class="rounded bg-gray-800 border-gray-700 text-amber-600" />
+              <span>Show Password</span>
+            </label>
+          </div>
+          <input type="password" id="dept-login-password" required value="roads123" placeholder="roads123" 
+                 class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 font-mono" />
+          <span class="text-[10px] text-gray-400 block">Accepted passwords: <code class="text-amber-300">roads123</code>, <code class="text-amber-300">password</code>, or <code class="text-amber-300">admin</code></span>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2">
+          <span>🏛️</span> Sign In to Department Console
+        </button>
+      </form>
+
+      <!-- Quick 1-Click Department Officer Accounts -->
+      <div class="border-t border-gray-800 pt-3 space-y-2">
+        <span class="text-[11px] text-gray-400 block font-semibold">⚡ One-Click Officer Testing Logins:</span>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <button type="button" onclick="quickLoginDept('roads@city.gov', 'roads123')" 
+                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-blue-800/60 text-left transition-colors">
+            <span class="font-bold text-blue-300 block">🚧 Road Admin</span>
+            <span class="text-[10px] text-gray-400">roads@city.gov (pass: roads123)</span>
+          </button>
+
+          <button type="button" onclick="quickLoginDept('sanitation@city.gov', 'waste123')" 
+                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-emerald-800/60 text-left transition-colors">
+            <span class="font-bold text-emerald-300 block">🗑️ Solid Waste Corp</span>
+            <span class="text-[10px] text-gray-400">sanitation@city.gov (pass: waste123)</span>
+          </button>
+
+          <button type="button" onclick="quickLoginDept('water@city.gov', 'water123')" 
+                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-cyan-800/60 text-left transition-colors">
+            <span class="font-bold text-cyan-300 block">💧 Water Board</span>
+            <span class="text-[10px] text-gray-400">water@city.gov (pass: water123)</span>
+          </button>
+
+          <button type="button" onclick="quickLoginDept('power@city.gov', 'power123')" 
+                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-amber-800/60 text-left transition-colors">
+            <span class="font-bold text-amber-300 block">⚡ Power & Grid</span>
+            <span class="text-[10px] text-gray-400">power@city.gov (pass: power123)</span>
+          </button>
+        </div>
+
+        <button type="button" onclick="quickLoginDept('admin@city.gov', 'admin123')" 
+                class="w-full p-2.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 text-xs font-bold text-purple-300 transition-colors mt-1">
+          🏛️ City Super Admin (admin@city.gov / pass: admin123)
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= SUBMISSION SUCCESS MODAL ================= -->
+  <div id="submission-success-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-emerald-500/40 space-y-6 shadow-2xl">
+      <div class="text-center space-y-2">
+        <div class="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 mx-auto flex items-center justify-center text-2xl">
+          ✓
+        </div>
+        <h3 class="text-xl font-bold text-white">Grievance Submitted!</h3>
+        <p class="text-xs text-gray-300">
+          Your complaint has been securely routed by the AI agent to the appropriate municipal department.
+        </p>
+      </div>
+
+      <!-- Grievance ID and Citizen Passkey Box -->
+      <div class="space-y-3 bg-gray-950/80 p-4 rounded-2xl border border-gray-800">
+        <div>
+          <span class="text-[10px] text-gray-400 uppercase font-mono block">Grievance Reference ID</span>
+          <div class="flex items-center justify-between">
+            <span id="success-grievance-id" class="text-base font-extrabold font-mono text-blue-400">GRV-2026-XXXX</span>
+            <button onclick="copyToClipboard(document.getElementById('success-grievance-id').innerText)" 
+                    class="text-xs text-gray-400 hover:text-white px-2 py-1 rounded bg-gray-800">Copy</button>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-2">
+          <span class="text-[10px] text-amber-400 uppercase font-mono font-bold block">⚠️ Secret Citizen Passkey (Save This!)</span>
+          <div class="flex items-center justify-between mt-0.5">
+            <span id="success-passkey" class="text-sm font-extrabold font-mono text-emerald-400">PASS-XXXX-YYYY</span>
+            <button onclick="copyToClipboard(document.getElementById('success-passkey').innerText)" 
+                    class="text-xs text-gray-400 hover:text-white px-2 py-1 rounded bg-gray-800">Copy</button>
+          </div>
+          <span class="text-[10px] text-gray-400 mt-1 block">This secret passkey allows you to track and decrypt your complaint anytime.</span>
+        </div>
+      </div>
+
+      <!-- Routing & SLA Details -->
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800">
+          <span class="text-gray-400 block text-[10px]">Routed Department</span>
+          <span id="success-dept-name" class="font-bold text-blue-300 block truncate">Road Admin</span>
+        </div>
+        <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800">
+          <span class="text-gray-400 block text-[10px]">AI Assigned SLA</span>
+          <span id="success-sla-deadline" class="font-bold text-amber-300 block">48 Hours</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button onclick="document.getElementById('submission-success-modal').classList.add('hidden')" 
+                class="px-4 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300 flex-1 transition-colors">
+          Close
+        </button>
+        <button onclick="trackSubmittedGrievance()" 
+                class="px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white flex-1 transition-colors shadow-lg shadow-blue-600/30">
+          Track My Grievance →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CLIENT ENCRYPTION PROGRESS MODAL ================= -->
+  <div id="encryption-progress-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel-elevated rounded-3xl p-8 max-w-sm w-full text-center space-y-4 border border-blue-500/40">
+      <div class="w-16 h-16 rounded-full bg-blue-600/20 border border-blue-500 text-blue-400 mx-auto flex items-center justify-center text-2xl animate-spin">
+        ⚙️
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-white">Client-Side Encryption in Progress</h3>
+        <p id="crypto-progress-text" class="text-xs text-blue-300 font-mono mt-2">
+          Generating 256-bit AES-GCM symmetric key...
+        </p>
+      </div>
+      <span class="text-[10px] text-gray-500 block">Secured with Web Crypto SubtleCrypto API</span>
+    </div>
+  </div>
+
+  <!-- ================= AI RESOLUTION VERIFICATION & CLOSURE MODAL ================= -->
+  <div id="resolve-ticket-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto hidden">
+    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-emerald-500/40 space-y-5 my-8 shadow-2xl">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🔍</span> AI Field Resolution Verification
+          </h3>
+          <span class="text-xs text-gray-400">Department must upload photo of resolved area. AI verifies location and defect remediation.</span>
+        </div>
+        <span id="resolve-ticket-id-display" class="font-mono text-xs font-bold text-blue-400 bg-blue-950/60 px-2.5 py-1 rounded border border-blue-800"></span>
+      </div>
+
+      <input type="hidden" id="resolve-ticket-id-input" />
+      <input type="hidden" id="resolve-before-image-hidden" />
+
+      <!-- Side-by-Side Before vs After Inspection Box -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <!-- Before: Reported Problem -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-red-400 uppercase tracking-wider flex items-center gap-1">
+              <span>⚠️</span> Before: Defect Evidence
+            </span>
+            <span class="text-[10px] text-gray-500 font-mono">Citizen Report</span>
+          </div>
+          <div class="rounded-xl overflow-hidden border border-gray-700 bg-gray-950 h-44 flex items-center justify-center relative">
+            <img id="resolve-before-preview" src="" alt="Before Defect" class="w-full h-full object-cover" />
+            <div id="resolve-before-placeholder" class="text-xs text-gray-500 p-4 text-center">
+              Original incident photo
+            </div>
+          </div>
+          <div id="resolve-issue-title-display" class="text-xs font-bold text-gray-200 truncate"></div>
+        </div>
+
+        <!-- After: Mandatory Proof of Resolution -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+              <span>📷</span> After: Proof of Resolution <span class="text-red-400">*</span>
+            </span>
+            <button type="button" id="btn-quick-proof" onclick="loadSampleProofPhoto()" 
+                    class="text-[10px] font-bold text-blue-400 hover:text-blue-300 underline">
+              ⚡ Load Sample Proof
+            </button>
+          </div>
+
+          <!-- Proof Upload Dropzone -->
+          <div id="proof-drop-zone" class="border-2 border-dashed border-gray-700 hover:border-emerald-500/70 rounded-xl h-44 bg-gray-950/50 flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group">
+            <input type="file" id="proof-file-input" accept="image/*" class="hidden" />
+            
+            <div id="proof-upload-placeholder" class="p-4 text-center space-y-1.5">
+              <span class="text-2xl block group-hover:scale-110 transition-transform">📸</span>
+              <span class="text-xs font-bold text-gray-300 block">Upload photo of resolved site</span>
+              <span class="text-[10px] text-gray-500 block">JPEG, PNG, WEBP, SVG</span>
+            </div>
+
+            <!-- Proof Image Preview -->
+            <div id="proof-preview-container" class="hidden w-full h-full relative">
+              <img id="proof-image-preview" src="" class="w-full h-full object-cover" />
+              <button type="button" onclick="clearProofImage()" 
+                      class="absolute top-2 right-2 px-2 py-0.5 rounded bg-gray-950/80 hover:bg-red-950 text-[10px] font-bold text-gray-300 border border-gray-700">
+                ✕ Change
+              </button>
+            </div>
+          </div>
+          <span class="text-[10px] text-gray-500 block">AI will verify spatial geometry & repair quality against Photo 1.</span>
+        </div>
+
+      </div>
+
+      <!-- Field Rectification Notes -->
+      <div class="space-y-1.5">
+        <label for="resolve-notes-input" class="block text-xs font-bold text-gray-300">
+          Field Rectification Notes <span class="text-red-400">*</span>
+        </label>
+        <textarea id="resolve-notes-input" rows="2" placeholder="Describe remediation actions (e.g. Bitumen asphalt cold-mix compaction completed, pipeline repaired, waste cleared)..."
+                  class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500"></textarea>
+      </div>
+
+      <!-- Officer / Squad Name -->
+      <div class="space-y-1.5">
+        <label for="resolve-officer-input" class="block text-xs font-bold text-gray-300">
+          Response Squad / Supervising Officer Name
+        </label>
+        <input type="text" id="resolve-officer-input" placeholder="e.g. Rapid Road Patching Crew #4 / Eng. R. Sharma" 
+               class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
+      </div>
+
+      <!-- Live AI Verification Report (Hidden initially) -->
+      <div id="resolve-ai-report-box" class="hidden p-4 rounded-2xl bg-gray-900/80 border space-y-3">
+        <!-- Dynamically populated by JS -->
+      </div>
+
+      <!-- Modal Footer Action Buttons -->
+      <div class="flex items-center gap-3 pt-2 border-t border-gray-800">
+        <button type="button" onclick="closeResolveModal()" class="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300 flex-1 transition-colors">
+          Cancel
+        </button>
+        <button type="button" id="btn-verify-resolve" onclick="verifyAndCloseTicket()" 
+                class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white flex-1 shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2">
+          <span>🤖</span> Verify Proof with AI & Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= AI SETTINGS MODAL ================= -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-md w-full border border-gray-700 space-y-5">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span>⚙️</span> AI Vision Configuration
+        </h3>
+        <button id="btn-close-settings" class="text-gray-400 hover:text-white text-sm">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-300">
+        CivicSense AI operates with a dual-engine architecture:
+      </p>
+
+      <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800 text-xs space-y-2">
+        <div class="flex items-center gap-2 text-emerald-400 font-semibold">
+          <span>✓ Built-in Neural Urban Defect Analyzer</span>
+        </div>
+        <p class="text-gray-400 text-[11px]">
+          Runs instantly with 0ms latency, zero API costs, and full offline visual & semantic classification.
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <label for="input-gemini-key" class="block text-xs font-bold text-gray-300">
+          Google Gemini API Key <span class="text-gray-500 font-normal">(Optional)</span>
+        </label>
+        <input type="password" id="input-gemini-key" placeholder="AIzaSy..." 
+               class="w-full glass-input rounded-xl p-3 text-xs font-mono text-gray-100 placeholder-gray-500" />
+        <span class="text-[10px] text-gray-500 block">
+          If provided, uses Gemini 2.5 Flash for multimodal vision analysis. Leave empty to use the built-in analyzer.
+        </span>
+      </div>
+
+      <div class="pt-2 flex items-center justify-end gap-2">
+        <button id="btn-save-settings" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30">
+          Save Settings
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+  <!-- Client-side Scripts -->
+  <script src="/js/authClient.js"></script>
+  <script src="/js/cryptoClient.js"></script>
+  <script src="/js/citizenPortal.js"></script>
+  <script src="/js/departmentPortal.js"></script>
+  <script src="/js/analyticsPortal.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

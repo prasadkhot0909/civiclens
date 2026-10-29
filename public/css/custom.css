@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #0b0f19;
+  color: #f3f4f6;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism card surfaces */
+.glass-panel {
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-elevated {
+  background: rgba(26, 34, 52, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+}
+
+.glass-input {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f9fafb;
+}
+
+.glass-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+/* Monospace font */
+.font-mono-code {
+  font-family: var(--font-mono);
+}
+
+/* Ambient glow effects */
+.ambient-glow-blue {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%);
+}
+
+.ambient-glow-green {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%);
+}
+
+.ambient-glow-rose {
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, rgba(244, 63, 94, 0) 70%);
+}
+
+/* Pulse badge */
+@keyframes e2ee-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.e2ee-badge-pulse {
+  animation: e2ee-pulse 2.5s infinite ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Department accent colors */
+.dept-border-road_admin { border-left: 4px solid #3b82f6; }
+.dept-border-municipal_corp { border-left: 4px solid #10b981; }
+.dept-border-water_board { border-left: 4px solid #06b6d4; }
+.dept-border-power_board { border-left: 4px solid #f59e0b; }
+
+/* Criticality badges */
+.badge-critical {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+
+.badge-high {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+}
+
+.badge-medium {
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+}
+
+.badge-low {
+  background: rgba(107, 114, 128, 0.18);
+  border: 1px solid rgba(107, 114, 128, 0.35);
+  color: #9ca3af;
+}
+
+/* SLA Countdown ticker */
+.sla-urgent-pulse {
+  animation: urgent-flash 1.2s infinite;
+}
+
+@keyframes urgent-flash {
+  0%, 100% { color: #f87171; border-color: rgba(239, 68, 68, 0.6); }
+  50% { color: #ef4444; border-color: rgba(239, 68, 68, 0.2); }
+}
+
+/* Image zoom inspection */
+.image-zoomable {
+  transition: transform 0.3s ease;
+}
+.image-zoomable:hover {
+  transform: scale(1.02);
+}
+
+/* Stepper line */
+.step-line {
+  height: 2px;
+  flex: 1;
+  background: #374151;
+}
+.step-line.active {
+  background: #10b981;
+}
