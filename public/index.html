@@ -37,7 +37,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('landing')">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="onLogoClick()">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-400 p-0.5 shadow-lg shadow-blue-500/20">
           <div class="w-full h-full bg-gray-950 rounded-[10px] flex items-center justify-center">
             <span class="text-lg">🏛️</span>
@@ -76,7 +76,7 @@
         </button>
       </nav>
 
-      <!-- Right Auth & Settings Widget -->
+      <!-- Right Auth Widget -->
       <div class="flex items-center gap-3">
         
         <!-- Logged In User Profile Widget -->
@@ -93,29 +93,11 @@
           </button>
         </div>
 
-        <!-- Guest Login Buttons (When not logged in) -->
-        <div id="auth-guest-widget" class="flex items-center gap-2">
-          <button onclick="openCitizenLoginModal()" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 text-xs font-bold transition-all flex items-center gap-1">
-            <span>👤</span> Citizen Login
-          </button>
-          <button onclick="openDepartmentLoginModal()" class="px-3 py-1.5 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition-all flex items-center gap-1">
-            <span>🏛️</span> Department Rep
-          </button>
-        </div>
-
         <!-- AI Engine Status Badge -->
         <div id="ai-engine-status-badge" class="hidden lg:flex text-[10px] font-mono font-bold text-blue-400 bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-800 items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
           Neural Urban Defect Analyzer
         </div>
-
-        <!-- Settings Button -->
-        <button id="btn-open-settings" title="AI Settings" class="p-2 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-gray-700 text-gray-300 hover:text-white transition-all">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
-        </button>
 
       </div>
 
@@ -129,89 +111,118 @@
     <div class="absolute top-10 left-1/4 w-96 h-96 ambient-glow-blue pointer-events-none rounded-full blur-3xl -z-10"></div>
     <div class="absolute top-40 right-1/4 w-96 h-96 ambient-glow-green pointer-events-none rounded-full blur-3xl -z-10"></div>
 
-    <!-- ================= SECTION 0: PORTAL SELECTOR & LANDING VIEW ================= -->
-    <section id="section-landing" class="view-section space-y-8">
-      
-      <div class="text-center max-w-3xl mx-auto space-y-3 py-6">
-        <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-900/30 text-blue-300 border border-blue-700/50 inline-block">
-          Autonomous Municipal Intelligence • Two-Portal Architecture
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
-          Select Your Civic Portal
-        </h1>
-        <p class="text-sm text-gray-400">
-          Citizens report urban defects with automated AI triage and SLA deadlines. Department representatives inspect assigned queues and verify photo proofs of repair.
-        </p>
-      </div>
-
-      <!-- 2 Portal Selection Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+    <!-- ================= SECTION 0: AUTHENTICATION GATEWAY ================= -->
+    <section id="section-auth" class="view-section py-8 flex items-center justify-center min-h-[70vh]">
+      <div class="glass-panel-elevated rounded-3xl p-6 sm:p-10 max-w-md w-full border border-blue-500/30 space-y-6 shadow-2xl relative">
         
-        <!-- Portal Card 1: Citizen Portal -->
-        <div class="glass-panel-elevated rounded-3xl p-8 border border-blue-500/30 hover:border-blue-500/70 transition-all flex flex-col justify-between space-y-6 group">
-          <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-blue-600/20 border border-blue-500 text-blue-400 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-              👤
-            </div>
-            <div>
-              <span class="text-xs font-mono font-bold text-blue-400 uppercase tracking-wider block">Portal 1</span>
-              <h2 class="text-xl font-extrabold text-white">Citizen Grievance Portal</h2>
-            </div>
-            <p class="text-xs text-gray-300 leading-relaxed">
-              Report public infrastructure defects such as road potholes, garbage heaps, broken water lines, and fallen power cables.
-            </p>
-            <ul class="text-xs text-gray-400 space-y-2">
-              <li class="flex items-center gap-2">✓ Upload photo & description of issue</li>
-              <li class="flex items-center gap-2">✓ Instant AI defect identification & SLA deadline</li>
-              <li class="flex items-center gap-2">✓ Track live countdown and view verified Before/After fix</li>
-            </ul>
-          </div>
-
-          <div class="space-y-2 pt-4 border-t border-gray-800">
-            <button onclick="quickLoginCitizen()" 
-                    class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
-              <span>🚀</span> Enter as Citizen (Aarav Mehta)
-            </button>
-            <div class="flex items-center justify-between text-[11px] pt-1">
-              <button onclick="openCitizenLoginModal()" class="text-blue-400 hover:underline">Custom Citizen Sign In</button>
-              <button onclick="openCitizenRegisterModal()" class="text-gray-400 hover:text-white">Register Account</button>
+        <!-- Header -->
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-400 p-0.5 shadow-xl shadow-blue-500/20 mx-auto">
+            <div class="w-full h-full bg-gray-950 rounded-[14px] flex items-center justify-center">
+              <span class="text-2xl">🏛️</span>
             </div>
           </div>
+          <h2 class="text-2xl font-black text-white tracking-tight">CivicSense Access</h2>
+          <p class="text-xs text-gray-400">
+            Sign in with your email & password to access the portal.
+          </p>
         </div>
 
-        <!-- Portal Card 2: Department Representative Portal -->
-        <div class="glass-panel-elevated rounded-3xl p-8 border border-amber-500/30 hover:border-amber-500/70 transition-all flex flex-col justify-between space-y-6 group">
-          <div class="space-y-4">
-            <div class="w-14 h-14 rounded-2xl bg-amber-600/20 border border-amber-500 text-amber-400 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-              🏛️
-            </div>
-            <div>
-              <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">Portal 2</span>
-              <h2 class="text-xl font-extrabold text-white">Department Official Portal</h2>
-            </div>
-            <p class="text-xs text-gray-300 leading-relaxed">
-              Official command console for municipal engineers, sanitation superintendents, hydraulic staff, and grid safety officers.
-            </p>
-            <ul class="text-xs text-gray-400 space-y-2">
-              <li class="flex items-center gap-2">✓ Gated Department Console & Live SLA Timers</li>
-              <li class="flex items-center gap-2">✓ Decrypt citizen evidence & dispatch repair squads</li>
-              <li class="flex items-center gap-2">✓ Upload repair photos for AI resolution verification</li>
-            </ul>
+        <!-- Mode Switcher Tabs (Sign In / Create Account) -->
+        <div class="flex p-1 bg-gray-950/80 rounded-2xl border border-gray-800 text-xs">
+          <button id="gate-tab-signin" type="button" onclick="setAuthGateMode('signin')" 
+                  class="flex-1 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all">
+            Sign In
+          </button>
+          <button id="gate-tab-register" type="button" onclick="setAuthGateMode('register')" 
+                  class="flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all">
+            Create Account
+          </button>
+        </div>
+
+        <!-- Inline Error Banner -->
+        <div id="gate-auth-error" class="hidden p-3 rounded-xl bg-red-950/80 border border-red-700/80 text-red-200 text-xs flex items-center gap-2">
+          <span class="font-bold">✕</span>
+          <span id="gate-auth-error-text" class="flex-1 leading-snug">Invalid email or password.</span>
+        </div>
+
+        <!-- FORM 1: SIGN IN -->
+        <form id="form-gate-login" class="space-y-4">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-gray-300">Email Address</label>
+            <input type="email" id="gate-login-email" required placeholder="name@example.com" autocomplete="email"
+                   class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 border border-gray-700/60 focus:border-blue-500" />
           </div>
 
-          <div class="space-y-2 pt-4 border-t border-gray-800">
-            <button onclick="openDepartmentLoginModal()" 
-                    class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2">
-              <span>🏛️</span> Sign In as Department Representative
-            </button>
-            <div class="text-[11px] text-gray-400 text-center pt-1">
-              Supports Road Admin, Municipal Corp, Water Board & Power Board
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-gray-300">Password</label>
+              <button type="button" onclick="toggleGatePasswordVisibility('gate-login-password')" class="text-[11px] text-gray-400 hover:text-gray-200">
+                Show / Hide
+              </button>
             </div>
+            <input type="password" id="gate-login-password" required placeholder="Enter password" autocomplete="current-password"
+                   class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 border border-gray-700/60 focus:border-blue-500" />
           </div>
+
+          <button type="submit" id="btn-gate-login-submit" 
+                  class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+            <span>🔐</span> Sign In to Proceed
+          </button>
+
+          <p class="text-[11px] text-center text-gray-400 pt-1">
+            Need a citizen account? <button type="button" onclick="setAuthGateMode('register')" class="text-blue-400 hover:underline font-semibold">Register here</button>
+          </p>
+        </form>
+
+        <!-- FORM 2: REGISTER CITIZEN -->
+        <form id="form-gate-register" class="space-y-3.5 hidden">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-gray-300">Full Name</label>
+            <input type="text" id="gate-reg-name" required placeholder="Your Name" autocomplete="name"
+                   class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 border border-gray-700/60 focus:border-blue-500" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-gray-300">Email Address</label>
+            <input type="email" id="gate-reg-email" required placeholder="name@example.com" autocomplete="email"
+                   class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 border border-gray-700/60 focus:border-blue-500" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-gray-300">Phone Number <span class="text-gray-500 font-normal">(Optional)</span></label>
+            <input type="tel" id="gate-reg-phone" placeholder="+91 98765 43210" autocomplete="tel"
+                   class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 border border-gray-700/60 focus:border-blue-500" />
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-gray-300">Password</label>
+              <button type="button" onclick="toggleGatePasswordVisibility('gate-reg-password')" class="text-[11px] text-gray-400 hover:text-gray-200">
+                Show / Hide
+              </button>
+            </div>
+            <input type="password" id="gate-reg-password" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password"
+                   class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 border border-gray-700/60 focus:border-blue-500" />
+          </div>
+
+          <button type="submit" id="btn-gate-reg-submit" 
+                  class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2">
+            <span>👤</span> Register & Enter Portal
+          </button>
+
+          <p class="text-[11px] text-center text-gray-400 pt-1">
+            Already have an account? <button type="button" onclick="setAuthGateMode('signin')" class="text-blue-400 hover:underline font-semibold">Sign in</button>
+          </p>
+        </form>
+
+        <div class="pt-2 border-t border-gray-800/80 text-center">
+          <span class="text-[10px] text-gray-500 block">
+            🔒 Secure Cryptographic Authentication • Citizens & Department Officials
+          </span>
         </div>
 
       </div>
-
     </section>
 
     <!-- ================= SECTION 1: CITIZEN GRIEVANCE SUBMISSION ================= -->
@@ -613,214 +624,6 @@
 
   </main>
 
-  <!-- ================= CITIZEN LOGIN MODAL (EMAIL VERIFICATION + PASSWORD) ================= -->
-  <div id="citizen-login-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-md w-full border border-blue-500/40 space-y-5 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-        <div>
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
-            <span>👤</span> Citizen Portal Sign In
-          </h3>
-          <span class="text-xs text-blue-400">Email Verification Code + Password</span>
-        </div>
-        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white text-sm">✕</button>
-      </div>
-
-      <!-- Verification Code Dispatch Banner (Appears when code is sent) -->
-      <div id="citizen-code-banner" class="hidden p-3 rounded-xl bg-blue-950/80 border border-blue-600/80 text-xs space-y-1.5 animate-pulse">
-        <div class="flex items-center justify-between text-blue-200">
-          <span class="font-bold flex items-center gap-1.5">
-            <span>📧</span> Verification Code Dispatched!
-          </span>
-          <span class="text-[10px] text-gray-400">Valid 15m</span>
-        </div>
-        <div class="flex items-center justify-between bg-blue-900/60 p-2 rounded-lg border border-blue-700/60">
-          <span class="text-xs text-gray-300">Your Code: <strong id="citizen-sent-code-display" class="text-emerald-400 font-mono text-sm tracking-wider">123456</strong></span>
-          <button type="button" onclick="autofillCitizenCode()" class="text-[11px] font-bold text-blue-300 bg-blue-800/80 px-2.5 py-1 rounded hover:bg-blue-700">
-            Auto-Fill
-          </button>
-        </div>
-      </div>
-
-      <form id="citizen-login-form" class="space-y-4">
-        <!-- Email + Send Code Button -->
-        <div class="space-y-1.5">
-          <label class="block text-xs font-bold text-gray-300">Citizen Email Address</label>
-          <div class="flex gap-2">
-            <input type="email" id="citizen-login-email" required placeholder="citizen@civic.gov" value="citizen@civic.gov"
-                   class="flex-1 glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
-            <button type="button" id="btn-send-citizen-code" onclick="requestCitizenVerificationCode()" 
-                    class="px-3.5 py-2.5 rounded-xl bg-blue-600/80 hover:bg-blue-600 text-xs font-bold text-white transition-colors flex items-center gap-1 flex-shrink-0">
-              Send Code
-            </button>
-          </div>
-        </div>
-
-        <!-- 6-Digit Verification Code -->
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between">
-            <label class="block text-xs font-bold text-gray-300">6-Digit Verification Code</label>
-            <span class="text-[10px] text-gray-500 font-mono">Demo bypass: 123456</span>
-          </div>
-          <input type="text" id="citizen-verify-code" required placeholder="Enter 6-digit code (e.g. 849201)" maxlength="6" 
-                 class="w-full glass-input rounded-xl p-3 text-xs font-mono tracking-widest text-emerald-400 placeholder-gray-500" />
-        </div>
-
-        <!-- Password -->
-        <div class="space-y-1.5">
-          <label class="block text-xs font-bold text-gray-300">Account Password</label>
-          <input type="password" id="citizen-login-password" required placeholder="citizen123" value="citizen123"
-                 class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
-          <span class="text-[10px] text-gray-500 block">Default citizen password is: <code class="text-blue-300">citizen123</code></span>
-        </div>
-
-        <button type="submit" id="btn-citizen-submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
-          <span>✓</span> Verify Code & Sign In as Citizen
-        </button>
-      </form>
-
-      <!-- Quick 1-Click Demo Citizen Login -->
-      <div class="border-t border-gray-800 pt-3 space-y-2">
-        <span class="text-[11px] text-gray-400 block font-semibold">⚡ Instant Verified Demo Access:</span>
-        <button type="button" onclick="quickLoginCitizen('citizen@civic.gov')" 
-                class="w-full py-2.5 rounded-xl bg-blue-900/30 hover:bg-blue-900/60 border border-blue-700/60 text-xs font-bold text-blue-300 transition-colors flex items-center justify-center gap-1.5">
-          <span>👤</span> Sign In as Aarav Mehta (citizen@civic.gov)
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= CITIZEN REGISTRATION MODAL ================= -->
-  <div id="citizen-register-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-md w-full border border-blue-500/40 space-y-4">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <span>📝</span> Register Citizen Account
-        </h3>
-        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white text-sm">✕</button>
-      </div>
-
-      <form id="citizen-register-form" class="space-y-3">
-        <div class="space-y-1">
-          <label class="block text-xs font-bold text-gray-300">Full Name</label>
-          <input type="text" id="reg-name" required placeholder="Aarav Mehta" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
-        </div>
-        <div class="space-y-1">
-          <label class="block text-xs font-bold text-gray-300">Email Address</label>
-          <input type="email" id="reg-email" required placeholder="you@example.com" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
-        </div>
-        <div class="space-y-1">
-          <label class="block text-xs font-bold text-gray-300">Phone Number</label>
-          <input type="text" id="reg-phone" placeholder="+91 98765 43210" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
-        </div>
-        <div class="space-y-1">
-          <label class="block text-xs font-bold text-gray-300">Create Password</label>
-          <input type="password" id="reg-password" required minlength="6" placeholder="At least 6 characters" class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100" />
-        </div>
-
-        <button type="submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all mt-2">
-          Create Account & Log In
-        </button>
-      </form>
-
-      <div class="text-center text-xs text-gray-400 pt-1">
-        Already registered? <button onclick="openCitizenLoginModal()" class="text-blue-400 hover:underline font-semibold">Sign in</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= DEPARTMENT REPRESENTATIVE LOGIN MODAL ================= -->
-  <div id="department-login-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-amber-500/50 space-y-5 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-        <div>
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
-            <span>🏛️</span> Department Representative Login
-          </h3>
-          <span class="text-xs text-amber-400">Exclusive access to Department Command Console</span>
-        </div>
-        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white text-sm">✕</button>
-      </div>
-
-      <!-- Quick Department Selector Dropdown -->
-      <div class="p-3.5 rounded-2xl bg-amber-950/30 border border-amber-700/50 space-y-1.5">
-        <label class="block text-[11px] font-bold text-amber-300 uppercase tracking-wider">
-          Quick Department Selector (Auto-Fills Credentials)
-        </label>
-        <select id="dept-preset-select" onchange="onDepartmentPresetSelect(this.value)" 
-                class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 bg-gray-900 border border-amber-700/60 focus:border-amber-500">
-          <option value="roads">🚧 Road Administration & Transport (roads@city.gov)</option>
-          <option value="sanitation">🗑️ Municipal Solid Waste Corp (sanitation@city.gov)</option>
-          <option value="water">💧 Water Supply & Sewerage Board (water@city.gov)</option>
-          <option value="power">⚡ Electricity & Grid Safety Board (power@city.gov)</option>
-          <option value="admin">🏛️ City Super Admin - All Departments (admin@city.gov)</option>
-        </select>
-      </div>
-
-      <form id="department-login-form" class="space-y-4">
-        <div class="space-y-1.5">
-          <label class="block text-xs font-bold text-gray-300">Official Municipal Email</label>
-          <input type="email" id="dept-login-email" required value="roads@city.gov" placeholder="roads@city.gov" 
-                 class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500" />
-        </div>
-
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between">
-            <label class="block text-xs font-bold text-gray-300">Department Security Password</label>
-            <label class="flex items-center gap-1.5 text-[11px] text-gray-400 cursor-pointer">
-              <input type="checkbox" onchange="togglePasswordVisibility('dept-login-password')" class="rounded bg-gray-800 border-gray-700 text-amber-600" />
-              <span>Show Password</span>
-            </label>
-          </div>
-          <input type="password" id="dept-login-password" required value="roads123" placeholder="roads123" 
-                 class="w-full glass-input rounded-xl p-3 text-xs text-gray-100 placeholder-gray-500 font-mono" />
-          <span class="text-[10px] text-gray-400 block">Accepted passwords: <code class="text-amber-300">roads123</code>, <code class="text-amber-300">password</code>, or <code class="text-amber-300">admin</code></span>
-        </div>
-
-        <button type="submit" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2">
-          <span>🏛️</span> Sign In to Department Console
-        </button>
-      </form>
-
-      <!-- Quick 1-Click Department Officer Accounts -->
-      <div class="border-t border-gray-800 pt-3 space-y-2">
-        <span class="text-[11px] text-gray-400 block font-semibold">⚡ One-Click Officer Testing Logins:</span>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-          <button type="button" onclick="quickLoginDept('roads@city.gov', 'roads123')" 
-                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-blue-800/60 text-left transition-colors">
-            <span class="font-bold text-blue-300 block">🚧 Road Admin</span>
-            <span class="text-[10px] text-gray-400">roads@city.gov (pass: roads123)</span>
-          </button>
-
-          <button type="button" onclick="quickLoginDept('sanitation@city.gov', 'waste123')" 
-                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-emerald-800/60 text-left transition-colors">
-            <span class="font-bold text-emerald-300 block">🗑️ Solid Waste Corp</span>
-            <span class="text-[10px] text-gray-400">sanitation@city.gov (pass: waste123)</span>
-          </button>
-
-          <button type="button" onclick="quickLoginDept('water@city.gov', 'water123')" 
-                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-cyan-800/60 text-left transition-colors">
-            <span class="font-bold text-cyan-300 block">💧 Water Board</span>
-            <span class="text-[10px] text-gray-400">water@city.gov (pass: water123)</span>
-          </button>
-
-          <button type="button" onclick="quickLoginDept('power@city.gov', 'power123')" 
-                  class="p-2.5 rounded-xl bg-gray-900/90 hover:bg-gray-800 border border-amber-800/60 text-left transition-colors">
-            <span class="font-bold text-amber-300 block">⚡ Power & Grid</span>
-            <span class="text-[10px] text-gray-400">power@city.gov (pass: power123)</span>
-          </button>
-        </div>
-
-        <button type="button" onclick="quickLoginDept('admin@city.gov', 'admin123')" 
-                class="w-full p-2.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 text-xs font-bold text-purple-300 transition-colors mt-1">
-          🏛️ City Super Admin (admin@city.gov / pass: admin123)
-        </button>
-      </div>
-
-    </div>
-  </div>
-
   <!-- ================= SUBMISSION SUCCESS MODAL ================= -->
   <div id="submission-success-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-emerald-500/40 space-y-6 shadow-2xl">
@@ -1006,48 +809,6 @@
         </button>
       </div>
 
-    </div>
-  </div>
-
-  <!-- ================= AI SETTINGS MODAL ================= -->
-  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 max-w-md w-full border border-gray-700 space-y-5">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <span>⚙️</span> AI Vision Configuration
-        </h3>
-        <button id="btn-close-settings" class="text-gray-400 hover:text-white text-sm">✕</button>
-      </div>
-
-      <p class="text-xs text-gray-300">
-        CivicSense AI operates with a dual-engine architecture:
-      </p>
-
-      <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800 text-xs space-y-2">
-        <div class="flex items-center gap-2 text-emerald-400 font-semibold">
-          <span>✓ Built-in Neural Urban Defect Analyzer</span>
-        </div>
-        <p class="text-gray-400 text-[11px]">
-          Runs instantly with 0ms latency, zero API costs, and full offline visual & semantic classification.
-        </p>
-      </div>
-
-      <div class="space-y-2">
-        <label for="input-gemini-key" class="block text-xs font-bold text-gray-300">
-          Google Gemini API Key <span class="text-gray-500 font-normal">(Optional)</span>
-        </label>
-        <input type="password" id="input-gemini-key" placeholder="AIzaSy..." 
-               class="w-full glass-input rounded-xl p-3 text-xs font-mono text-gray-100 placeholder-gray-500" />
-        <span class="text-[10px] text-gray-500 block">
-          If provided, uses Gemini 2.5 Flash for multimodal vision analysis. Leave empty to use the built-in analyzer.
-        </span>
-      </div>
-
-      <div class="pt-2 flex items-center justify-end gap-2">
-        <button id="btn-save-settings" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30">
-          Save Settings
-        </button>
-      </div>
     </div>
   </div>
 

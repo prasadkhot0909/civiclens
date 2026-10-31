@@ -7,11 +7,17 @@ const USERS_FILE = path.join(__dirname, '../../data/users.json');
 // In-memory active session tokens
 const sessions = new Map();
 
-// In-memory active email verification codes
-const emailVerificationCodes = new Map();
-
 function hashPassword(password, salt = 'civic_salt_2026') {
   return crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+}
+
+function verifyPassword(password, storedHash) {
+  if (!password || !storedHash) return false;
+  const computed = hashPassword(password);
+  const bufA = Buffer.from(computed, 'hex');
+  const bufB = Buffer.from(storedHash, 'hex');
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
 }
 
 class AuthManager {
@@ -138,16 +144,34 @@ class AuthManager {
   }
 
   registerCitizen({ email, password, name, phone }) {
-    if (this.findByEmail(email)) {
-      throw new Error('An account with this email address already exists.');
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const cleanPass = password ? password.trim() : '';
+    const cleanName = name ? name.trim() : '';
+    const cleanPhone = phone ? phone.trim() : '';
+
+    if (!cleanEmail || !cleanPass || !cleanName) {
+      throw new Error('Please provide your name, email, and password.');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      throw new Error('Please enter a valid email address (e.g. name@example.com).');
+    }
+
+    if (cleanPass.length < 6) {
+      throw new Error('Password must be at least 6 characters long.');
+    }
+
+    if (this.findByEmail(cleanEmail)) {
+      throw new Error('An account with this email address already exists. Please sign in instead.');
     }
 
     const newUser = {
       id: `usr_cit_${Date.now()}`,
-      email: email.trim().toLowerCase(),
-      passwordHash: hashPassword(password),
-      name: name.trim(),
-      phone: phone ? phone.trim() : '',
+      email: cleanEmail,
+      passwordHash: hashPassword(cleanPass),
+      name: cleanName,
+      phone: cleanPhone,
       role: 'CITIZEN',
       departmentId: null,
       departmentName: null,
@@ -163,127 +187,22 @@ class AuthManager {
     const cleanEmail = email ? email.trim().toLowerCase() : '';
     const cleanPass = password ? password.trim() : '';
 
+    if (!cleanEmail || !cleanPass) {
+      throw new Error('Please enter both your email address and password.');
+    }
+
     const user = this.findByEmail(cleanEmail);
-    if (!user) {
-      throw new Error(`Account not found for "${cleanEmail}". Please check your email address.`);
-    }
-
-    const computed = hashPassword(cleanPass);
-    let isMatch = (computed === user.passwordHash);
-
-    // If department representative, accept assigned password and common municipal standard passwords
-    if (!isMatch && user.role === 'DEPARTMENT') {
-      const allowedFallbacks = [
-        'password', 'password123', 'admin', 'admin123', 'city123', 'dept123',
-        user.email.split('@')[0], // e.g. 'roads', 'sanitation', 'water', 'power', 'admin'
-        user.email.split('@')[0] + '123' // e.g. 'roads123', 'sanitation123', etc.
-      ];
-      if (allowedFallbacks.includes(cleanPass.toLowerCase())) {
-        isMatch = true;
-      }
-    }
-
-    // If citizen, also accept universal test password 'citizen123' or 'password'
-    if (!isMatch && user.role === 'CITIZEN') {
-      if (cleanPass === 'citizen123' || cleanPass === 'password') {
-        isMatch = true;
-      }
-    }
-
-    if (!isMatch) {
-      throw new Error('Incorrect password. Please verify and retry.');
+    if (!user || !verifyPassword(cleanPass, user.passwordHash)) {
+      throw new Error('Invalid email or password. Please verify and try again.');
     }
 
     if (requiredRole && user.role !== requiredRole) {
       if (requiredRole === 'DEPARTMENT') {
         throw new Error('Access Denied: This account is a Citizen account, not an authorized Department Representative.');
       } else if (requiredRole === 'CITIZEN') {
-        throw new Error('This account belongs to a Department Official. Please log in through the Department Portal.');
+        throw new Error('This account belongs to a Department Official. Please sign in through the Department Portal.');
       }
     }
-
-    return this.createSession(user);
-  }
-
-  // Generate & dispatch email verification code for citizen portal
-  sendVerificationCode(email) {
-    const cleanEmail = email ? email.trim().toLowerCase() : '';
-    if (!cleanEmail || !cleanEmail.includes('@')) {
-      throw new Error('Please enter a valid email address.');
-    }
-
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 15 * 60 * 1000; // 15 mins
-
-    emailVerificationCodes.set(cleanEmail, { code, expiresAt });
-    console.log(`[Auth] Email verification code for ${cleanEmail}: ${code}`);
-
-    return {
-      email: cleanEmail,
-      code,
-      message: `Verification code successfully generated for ${cleanEmail}`
-    };
-  }
-
-  // Verify email verification code & authenticate/register citizen
-  verifyCitizenAndLogin(email, verificationCode, password, name = '') {
-    const cleanEmail = email ? email.trim().toLowerCase() : '';
-    const cleanCode = verificationCode ? verificationCode.trim() : '';
-    const cleanPass = password ? password.trim() : '';
-
-    if (!cleanEmail || !cleanCode) {
-      throw new Error('Please provide both your email address and the 6-digit verification code.');
-    }
-
-    if (!cleanPass) {
-      throw new Error('Please enter your citizen account password.');
-    }
-
-    // Check code
-    const record = emailVerificationCodes.get(cleanEmail);
-    const isMasterCode = (cleanCode === '123456');
-    const isMatch = (record && record.code === cleanCode && Date.now() < record.expiresAt) || isMasterCode;
-
-    if (!isMatch) {
-      throw new Error('Invalid or expired verification code. Please request a new code.');
-    }
-
-    // Code verified! Find or create citizen user
-    let user = this.findByEmail(cleanEmail);
-    if (!user) {
-      // Auto-create verified citizen
-      user = {
-        id: `usr_cit_${Date.now()}`,
-        email: cleanEmail,
-        passwordHash: hashPassword(cleanPass),
-        name: (name && name.trim()) || cleanEmail.split('@')[0],
-        phone: '',
-        role: 'CITIZEN',
-        departmentId: null,
-        departmentName: null,
-        isEmailVerified: true,
-        createdAt: new Date().toISOString()
-      };
-      this.users.push(user);
-      this.save();
-    } else {
-      if (user.role !== 'CITIZEN') {
-        throw new Error('This email is registered as an official Department account. Please sign in through the Department Portal.');
-      }
-
-      // Check password
-      const computed = hashPassword(cleanPass);
-      let passMatches = (computed === user.passwordHash) || 
-                        (cleanPass === 'citizen123') || 
-                        (cleanPass === 'password');
-      if (!passMatches) {
-        throw new Error('Incorrect password for this citizen account.');
-      }
-      user.isEmailVerified = true;
-    }
-
-    // Remove used code
-    emailVerificationCodes.delete(cleanEmail);
 
     return this.createSession(user);
   }
@@ -323,22 +242,6 @@ class AuthManager {
 
   destroySession(token) {
     if (token) sessions.delete(token);
-  }
-
-  getDemoAccounts() {
-    return {
-      citizens: [
-        { email: 'citizen@civic.gov', password: 'citizen123', name: 'Aarav Mehta', role: 'Citizen' },
-        { email: 'priya.sharma@civic.gov', password: 'citizen123', name: 'Priya Sharma', role: 'Citizen' }
-      ],
-      departmentReps: [
-        { email: 'roads@city.gov', password: 'roads123', name: 'Er. R. Sharma', department: 'Road Administration', deptId: 'road_admin' },
-        { email: 'sanitation@city.gov', password: 'waste123', name: 'Dr. A. Verma', department: 'Municipal Solid Waste Corp', deptId: 'municipal_corp' },
-        { email: 'water@city.gov', password: 'water123', name: 'Er. K. Nair', department: 'Water Supply & Sewerage Board', deptId: 'water_board' },
-        { email: 'power@city.gov', password: 'power123', name: 'Inspector M. Patel', department: 'Electricity & Public Works', deptId: 'power_board' },
-        { email: 'admin@city.gov', password: 'admin123', name: 'Commissioner V. Rao', department: 'Central Administration (All)', deptId: 'all' }
-      ]
-    };
   }
 }
 

@@ -15,12 +15,7 @@ function generateGrievanceId() {
 router.get('/my-grievances', requireAuth, (req, res) => {
   const userEmail = req.user.email.toLowerCase();
   const all = db.getAll();
-  // Match by citizenEmail or return user's tickets (or all sample tickets for the demo citizen account)
-  const myTickets = all.filter(g => {
-    if (g.citizenEmail && g.citizenEmail.toLowerCase() === userEmail) return true;
-    if (userEmail === 'citizen@civic.gov') return true; // Show demo tickets for convenience
-    return false;
-  });
+  const myTickets = all.filter(g => g.citizenEmail && g.citizenEmail.toLowerCase() === userEmail);
 
   res.json({
     success: true,
@@ -30,17 +25,16 @@ router.get('/my-grievances', requireAuth, (req, res) => {
 });
 
 // Submit a new encrypted grievance
-router.post('/submit', optionalAuth, async (req, res) => {
+router.post('/submit', requireAuth, async (req, res) => {
   try {
     const {
       encryptedData,
       aiTriage: clientAiTriage,
       rawPreview, // Optional preview for server AI if not pre-computed
-      passkeyHint,
-      citizenEmail: clientCitizenEmail
+      passkeyHint
     } = req.body;
 
-    const citizenEmail = req.user ? req.user.email : (clientCitizenEmail || null);
+    const citizenEmail = req.user.email;
 
     if (!encryptedData || !encryptedData.ciphertext || !encryptedData.iv) {
       return res.status(400).json({

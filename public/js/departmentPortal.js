@@ -140,9 +140,9 @@ async function loadDepartmentTickets() {
           </p>
         </div>
         <div class="pt-2">
-          <button onclick="openDepartmentLoginModal()" 
+          <button onclick="switchTab('auth')" 
                   class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all">
-            Log In as Department Representative →
+            Sign In with Department Credentials →
           </button>
         </div>
       </div>

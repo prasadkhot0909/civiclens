@@ -1,8 +1,9 @@
 /**
- * CivicSense AI - Application Controller & 2-Portal Navigation
+ * CivicSense AI - Application Controller & Role-Based Navigation
+ * Enforced Authentication Barrier & Portal Switching
  */
 
-let activeTab = 'submit';
+let activeTab = 'auth';
 
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[CivicSense AI] App Initializing...');
@@ -14,29 +15,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2. Initialize Web Crypto client
   try {
-    await window.cryptoClient.loadDepartmentPublicKey();
-    const fpEl = document.getElementById('e2ee-key-fingerprint');
-    if (fpEl) fpEl.innerText = window.cryptoClient.departmentKeyFingerprint;
+    if (window.cryptoClient && typeof window.cryptoClient.loadDepartmentPublicKey === 'function') {
+      await window.cryptoClient.loadDepartmentPublicKey();
+      const fpEl = document.getElementById('e2ee-key-fingerprint');
+      if (fpEl) fpEl.innerText = window.cryptoClient.departmentKeyFingerprint;
+    }
   } catch (e) {
     console.warn('Could not load department public key on startup:', e.message);
   }
 
-  // 3. Initialize tabs & auth modals
+  // 3. Initialize navigation & auth gateway forms
   initTabNavigation();
-  initAuthModals();
+  initAuthGateway();
 
-  // 4. Initialize views
+  // 4. Initialize portal modules
   if (typeof initCitizenPortal === 'function') initCitizenPortal();
   if (typeof initDepartmentPortal === 'function') initDepartmentPortal();
   if (typeof initAnalyticsPortal === 'function') initAnalyticsPortal();
 
-  // 5. Setup settings modal
-  setupSettingsModal();
-
-  // 6. Check AI engine status
+  // 5. Query AI engine status (code-configured)
   checkAiStatus();
 
-  // Default initial tab based on role
+  // 6. Direct user based on authentication status
   if (window.authClient && window.authClient.currentUser) {
     if (window.authClient.currentUser.role === 'DEPARTMENT') {
       switchTab('dept');
@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       switchTab('submit');
     }
   } else {
-    // Show landing portal selection if guest
-    switchTab('landing');
+    // Lock into authentication gate
+    switchTab('auth');
   }
 
   window.addEventListener('resize', () => {
@@ -66,19 +66,26 @@ function initTabNavigation() {
 }
 
 window.switchTab = function(targetTab) {
-  // Access Control Gates
+  const user = window.authClient?.currentUser;
+
+  // Strict Authentication Gate: User cannot view or access any portal without signing in
+  if (!user) {
+    targetTab = 'auth';
+  } else if (targetTab === 'auth') {
+    targetTab = user.role === 'DEPARTMENT' ? 'dept' : 'submit';
+  }
+
+  // Role Gate: Restrict Department Console & City Analytics exclusively to Department Representatives
   if (targetTab === 'dept' || targetTab === 'analytics') {
-    const user = window.authClient?.currentUser;
     if (!user || user.role !== 'DEPARTMENT') {
-      showToast('Access Denied: The Department Console is restricted to authorized Department Representatives.', 'error');
-      openDepartmentLoginModal();
+      showToast('Access Denied: Restricted exclusively to authorized Department Representatives.', 'error');
       return;
     }
   }
 
   activeTab = targetTab;
 
-  // Update nav buttons
+  // Update nav buttons active states
   const buttons = document.querySelectorAll('.nav-tab-btn');
   buttons.forEach(b => {
     const isTarget = b.getAttribute('data-tab') === targetTab;
@@ -101,193 +108,181 @@ window.switchTab = function(targetTab) {
     }
   });
 
-  // Trigger reloads on tab focus
+  // Load section-specific data
+  if (targetTab === 'my-grievances' && typeof loadMyGrievances === 'function') {
+    loadMyGrievances();
+  }
   if (targetTab === 'dept' && typeof loadDepartmentTickets === 'function') {
     loadDepartmentTickets();
-  } else if (targetTab === 'analytics' && typeof loadAnalyticsData === 'function') {
-    setTimeout(loadAnalyticsData, 100);
-  } else if (targetTab === 'my-grievances' && typeof loadMyGrievances === 'function') {
-    loadMyGrievances();
+  }
+  if (targetTab === 'analytics' && typeof loadAnalyticsData === 'function') {
+    loadAnalyticsData();
   }
 };
 
-// ==========================================
-// 2-PORTAL AUTHENTICATION MODALS & CONTROLS
-// ==========================================
+window.onLogoClick = function() {
+  const user = window.authClient?.currentUser;
+  if (!user) {
+    switchTab('auth');
+  } else if (user.role === 'DEPARTMENT') {
+    switchTab('dept');
+  } else {
+    switchTab('submit');
+  }
+};
 
-function initAuthModals() {
-  // Citizen login form submit (Email Verification Code + Password)
-  const citizenForm = document.getElementById('citizen-login-form');
-  if (citizenForm) {
-    citizenForm.addEventListener('submit', async (e) => {
+// ================= AUTHENTICATION GATEWAY CONTROLLER =================
+
+function initAuthGateway() {
+  // Sign In Form
+  const loginForm = document.getElementById('form-gate-login');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('citizen-login-email').value.trim();
-      const code = document.getElementById('citizen-verify-code').value.trim();
-      const pass = document.getElementById('citizen-login-password').value.trim();
+      clearGateError();
 
-      if (!code) {
-        showToast('Please request and enter your 6-digit email verification code.', 'warning');
+      const emailInput = document.getElementById('gate-login-email');
+      const passInput = document.getElementById('gate-login-password');
+      const submitBtn = document.getElementById('btn-gate-login-submit');
+
+      const email = emailInput ? emailInput.value.trim() : '';
+      const pass = passInput ? passInput.value.trim() : '';
+
+      if (!email || !pass) {
+        showGateError('Please enter both your email address and password.');
         return;
       }
 
+      const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg class="animate-spin h-4 w-4 text-white inline-block mr-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg> Verifying Credentials...
+        `;
+      }
+
       try {
-        await window.authClient.citizenVerifyAndLogin(email, code, pass);
-        closeAuthModal();
+        await window.authClient.login(email, pass);
+        // Form reset on success
+        loginForm.reset();
       } catch (err) {
-        // error already toasted in authClient
+        showGateError(err.message || 'Invalid email or password.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHtml;
+        }
       }
     });
   }
 
-  // Citizen register form submit
-  const registerForm = document.getElementById('citizen-register-form');
-  if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
+  // Registration Form
+  const regForm = document.getElementById('form-gate-register');
+  if (regForm) {
+    regForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('reg-name').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
-      const phone = document.getElementById('reg-phone').value.trim();
-      const pass = document.getElementById('reg-password').value.trim();
-      try {
-        await window.authClient.register(email, pass, name, phone);
-        closeAuthModal();
-      } catch (err) {}
-    });
-  }
+      clearGateError();
 
-  // Department login form submit
-  const deptForm = document.getElementById('department-login-form');
-  if (deptForm) {
-    deptForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('dept-login-email').value.trim();
-      const pass = document.getElementById('dept-login-password').value.trim();
+      const nameInput = document.getElementById('gate-reg-name');
+      const emailInput = document.getElementById('gate-reg-email');
+      const phoneInput = document.getElementById('gate-reg-phone');
+      const passInput = document.getElementById('gate-reg-password');
+      const submitBtn = document.getElementById('btn-gate-reg-submit');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      const pass = passInput ? passInput.value.trim() : '';
+
+      if (!name || !email || !pass) {
+        showGateError('Please fill in your name, email, and password.');
+        return;
+      }
+
+      if (pass.length < 6) {
+        showGateError('Password must be at least 6 characters long.');
+        return;
+      }
+
+      const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg class="animate-spin h-4 w-4 text-white inline-block mr-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg> Creating Account...
+        `;
+      }
+
       try {
-        await window.authClient.login(email, pass, 'department');
-        closeAuthModal();
-      } catch (err) {}
+        await window.authClient.register(name, email, pass, phone);
+        regForm.reset();
+      } catch (err) {
+        showGateError(err.message || 'Registration failed.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHtml;
+        }
+      }
     });
   }
 }
 
-// Citizen Email Verification Code Dispatcher
-window.requestCitizenVerificationCode = async function() {
-  const emailInput = document.getElementById('citizen-login-email');
-  const email = emailInput ? emailInput.value.trim() : '';
+// Switch between Sign In and Create Account on the Auth Gate
+window.setAuthGateMode = function(mode) {
+  clearGateError();
 
-  if (!email || !email.includes('@')) {
-    showToast('Please enter a valid email address first.', 'warning');
-    return;
-  }
+  const tabSignIn = document.getElementById('gate-tab-signin');
+  const tabRegister = document.getElementById('gate-tab-register');
+  const formSignIn = document.getElementById('form-gate-login');
+  const formRegister = document.getElementById('form-gate-register');
 
-  const btnSend = document.getElementById('btn-send-citizen-code');
-  const originalHtml = btnSend ? btnSend.innerHTML : '';
-  if (btnSend) {
-    btnSend.disabled = true;
-    btnSend.innerText = 'Sending...';
-  }
-
-  try {
-    const data = await window.authClient.sendEmailVerificationCode(email);
-    const banner = document.getElementById('citizen-code-banner');
-    const display = document.getElementById('citizen-sent-code-display');
-    if (banner && display) {
-      display.innerText = data.verificationCode;
-      banner.classList.remove('hidden');
+  if (mode === 'register') {
+    if (tabRegister) {
+      tabRegister.className = 'flex-1 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all';
     }
-    showToast(`Verification code sent to ${email}: [ ${data.verificationCode} ]`, 'success');
-  } catch (err) {
-    // error handled
-  } finally {
-    if (btnSend) {
-      btnSend.disabled = false;
-      btnSend.innerText = 'Resend Code';
+    if (tabSignIn) {
+      tabSignIn.className = 'flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all';
     }
+    if (formRegister) formRegister.classList.remove('hidden');
+    if (formSignIn) formSignIn.classList.add('hidden');
+  } else {
+    if (tabSignIn) {
+      tabSignIn.className = 'flex-1 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all';
+    }
+    if (tabRegister) {
+      tabRegister.className = 'flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all';
+    }
+    if (formSignIn) formSignIn.classList.remove('hidden');
+    if (formRegister) formRegister.classList.add('hidden');
   }
 };
 
-window.autofillCitizenCode = function() {
-  const code = window.authClient?.pendingVerificationCode || '123456';
-  const codeInput = document.getElementById('citizen-verify-code');
-  if (codeInput) {
-    codeInput.value = code;
-    showToast(`Verification code [ ${code} ] auto-filled!`, 'info');
-  }
-};
-
-// Department Preset Selector (Dropdown change handler)
-window.onDepartmentPresetSelect = function(presetKey) {
-  const presets = {
-    roads: { email: 'roads@city.gov', pass: 'roads123' },
-    sanitation: { email: 'sanitation@city.gov', pass: 'waste123' },
-    water: { email: 'water@city.gov', pass: 'water123' },
-    power: { email: 'power@city.gov', pass: 'power123' },
-    admin: { email: 'admin@city.gov', pass: 'admin123' }
-  };
-
-  const selected = presets[presetKey];
-  if (!selected) return;
-
-  const emailInput = document.getElementById('dept-login-email');
-  const passInput = document.getElementById('dept-login-password');
-  if (emailInput) emailInput.value = selected.email;
-  if (passInput) passInput.value = selected.pass;
-
-  showToast(`Auto-selected: ${selected.email}`, 'info');
-};
-
-window.togglePasswordVisibility = function(inputId) {
+window.toggleGatePasswordVisibility = function(inputId) {
   const input = document.getElementById(inputId);
   if (!input) return;
   input.type = input.type === 'password' ? 'text' : 'password';
 };
 
-window.openCitizenLoginModal = function() {
-  closeAuthModal();
-  document.getElementById('citizen-login-modal').classList.remove('hidden');
-};
-
-window.openDepartmentLoginModal = function() {
-  closeAuthModal();
-  document.getElementById('department-login-modal').classList.remove('hidden');
-};
-
-window.openCitizenRegisterModal = function() {
-  closeAuthModal();
-  document.getElementById('citizen-register-modal').classList.remove('hidden');
-};
-
-window.closeAuthModal = function() {
-  const modals = [
-    'citizen-login-modal',
-    'department-login-modal',
-    'citizen-register-modal'
-  ];
-  modals.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('hidden');
-  });
-};
-
-// Quick 1-Click Demo Logins
-window.quickLoginCitizen = async function(email = 'citizen@civic.gov') {
-  try {
-    // Generate code & verify login seamlessly in 1 click
-    await window.authClient.citizenVerifyAndLogin(email, '123456', 'citizen123', 'Aarav Mehta');
-    closeAuthModal();
-  } catch (err) {
-    showToast('Login failed: ' + err.message, 'error');
+function showGateError(msg) {
+  const errBox = document.getElementById('gate-auth-error');
+  const errText = document.getElementById('gate-auth-error-text');
+  if (errBox && errText) {
+    errText.innerText = msg;
+    errBox.classList.remove('hidden');
   }
-};
+  showToast(msg, 'error');
+}
 
-window.quickLoginDept = async function(email, pass) {
-  try {
-    await window.authClient.login(email, pass, 'department');
-    closeAuthModal();
-  } catch (err) {
-    showToast('Login failed: ' + err.message, 'error');
-  }
-};
+function clearGateError() {
+  const errBox = document.getElementById('gate-auth-error');
+  if (errBox) errBox.classList.add('hidden');
+}
 
 window.userLogout = function() {
   window.authClient.logout();
@@ -328,39 +323,7 @@ window.showToast = function(message, type = 'info') {
   }, 4000);
 };
 
-// Settings Modal
-function setupSettingsModal() {
-  const openBtn = document.getElementById('btn-open-settings');
-  const closeBtn = document.getElementById('btn-close-settings');
-  const saveBtn = document.getElementById('btn-save-settings');
-  const modal = document.getElementById('settings-modal');
-
-  if (openBtn && modal) {
-    openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
-  }
-  if (closeBtn && modal) {
-    closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-  }
-  if (saveBtn && modal) {
-    saveBtn.addEventListener('click', async () => {
-      const apiKey = document.getElementById('input-gemini-key').value.trim();
-      try {
-        const res = await fetch('/api/ai/set-api-key', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ apiKey })
-        });
-        const data = await res.json();
-        showToast(data.message, data.hasCustomKey ? 'success' : 'info');
-        checkAiStatus();
-        modal.classList.add('hidden');
-      } catch (err) {
-        showToast('Failed to save settings: ' + err.message, 'error');
-      }
-    });
-  }
-}
-
+// Query backend AI status (purely code/env configured)
 async function checkAiStatus() {
   try {
     const res = await fetch('/api/ai/status');

@@ -3,9 +3,6 @@ const router = express.Router();
 const { analyzeGrievance } = require('../ai/aiEngine');
 const { PRESETS } = require('../ai/presets');
 
-// In-memory runtime API key (if set via UI modal)
-let runtimeApiKey = null;
-
 // Return sample presets
 router.get('/presets', (req, res) => {
   res.json({
@@ -29,8 +26,7 @@ router.post('/analyze-preview', async (req, res) => {
     const triage = await analyzeGrievance({
       imageBase64,
       description,
-      location,
-      customApiKey: runtimeApiKey
+      location
     });
 
     res.json({
@@ -46,25 +42,13 @@ router.post('/analyze-preview', async (req, res) => {
   }
 });
 
-// Set custom Gemini API Key via UI
-router.post('/set-api-key', (req, res) => {
-  const { apiKey } = req.body;
-  runtimeApiKey = apiKey && apiKey.trim() ? apiKey.trim() : null;
-  res.json({
-    success: true,
-    hasCustomKey: !!runtimeApiKey,
-    message: runtimeApiKey ? 'Gemini API Key activated for live analysis.' : 'Gemini Key cleared; using built-in Neural Analyzer.'
-  });
-});
-
 // Get AI configuration status
 router.get('/status', (req, res) => {
-  const hasEnvKey = !!process.env.GEMINI_API_KEY;
-  const hasRuntimeKey = !!runtimeApiKey;
+  const hasEnvKey = !!(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim().length > 10);
   res.json({
     success: true,
-    activeEngine: (hasEnvKey || hasRuntimeKey) ? 'Google Gemini Multimodal Vision API' : 'Built-in Neural Urban Defect Analyzer',
-    hasKey: hasEnvKey || hasRuntimeKey
+    activeEngine: hasEnvKey ? 'Google Gemini 2.5 Flash Vision' : 'Built-in Neural Urban Defect Analyzer',
+    hasKey: hasEnvKey
   });
 });
 

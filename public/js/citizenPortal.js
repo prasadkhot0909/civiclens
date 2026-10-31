@@ -37,8 +37,8 @@ window.loadMyGrievances = async function() {
         <span class="text-3xl block">👤</span>
         <h4 class="text-sm font-bold text-gray-200">Log In to View Your Grievances</h4>
         <p class="text-xs text-gray-400">Please sign in with your citizen account to view all complaints submitted by you.</p>
-        <button onclick="openCitizenLoginModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition-all">
-          Citizen Login →
+        <button onclick="switchTab('auth')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition-all">
+          Sign In →
         </button>
       </div>
     `;
