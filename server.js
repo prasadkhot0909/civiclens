@@ -43,6 +43,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// 404 handler for unhandled API routes (prevents returning HTML for API calls)
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    success: false,
+    error: `API endpoint not found: ${req.method} ${req.originalUrl}`
+  });
+});
+
 // Fallback to SPA
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

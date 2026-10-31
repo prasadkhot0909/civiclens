@@ -9,6 +9,23 @@ class AuthClient {
     this.currentUser = null;
   }
 
+  // Safe JSON response parser that handles HTML error pages gracefully
+  async parseResponse(res) {
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      try {
+        return await res.json();
+      } catch (e) {
+        throw new Error('Malformed JSON response from server.');
+      }
+    }
+    const text = await res.text();
+    if (res.status === 404 || text.includes('<!DOCTYPE') || text.includes('<html')) {
+      throw new Error('Server route not found. Please restart your server ("npm start") so the latest routes are loaded.');
+    }
+    throw new Error(`Server returned non-JSON response (${res.status}): ${text.slice(0, 100)}`);
+  }
+
   // Check saved session on app startup
   async checkSession() {
     if (!this.token) {
@@ -21,7 +38,7 @@ class AuthClient {
       const res = await fetch('/api/auth/me', {
         headers: { 'Authorization': `Bearer ${this.token}` }
       });
-      const data = await res.json();
+      const data = await this.parseResponse(res);
       if (data.success && data.user) {
         this.currentUser = data.user;
       } else {
@@ -73,7 +90,7 @@ class AuthClient {
         body: JSON.stringify({ email: cleanEmail, password: cleanPass, portal })
       });
 
-      const data = await res.json();
+      const data = await this.parseResponse(res);
       if (!data.success) throw new Error(data.error || 'Login failed');
 
       this.token = data.token;
@@ -119,7 +136,7 @@ class AuthClient {
         })
       });
 
-      const data = await res.json();
+      const data = await this.parseResponse(res);
       if (!data.success) throw new Error(data.error || 'Registration failed');
 
       this.token = data.token;
@@ -161,7 +178,7 @@ class AuthClient {
         })
       });
 
-      const data = await res.json();
+      const data = await this.parseResponse(res);
       if (!data.success) throw new Error(data.error || 'Department registration failed');
 
       this.token = data.token;
