@@ -131,25 +131,25 @@ window.onLogoClick = function() {
   }
 };
 
-// ================= AUTHENTICATION GATEWAY CONTROLLER =================
+// ================= DUAL-PORTAL AUTHENTICATION GATEWAY CONTROLLER =================
 
 function initAuthGateway() {
-  // Sign In Form
-  const loginForm = document.getElementById('form-gate-login');
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
+  // 1. Citizen Sign In Form
+  const citLoginForm = document.getElementById('form-gate-citizen-login');
+  if (citLoginForm) {
+    citLoginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      clearGateError();
+      clearCitizenError();
 
-      const emailInput = document.getElementById('gate-login-email');
-      const passInput = document.getElementById('gate-login-password');
-      const submitBtn = document.getElementById('btn-gate-login-submit');
+      const emailInput = document.getElementById('gate-citizen-login-email');
+      const passInput = document.getElementById('gate-citizen-login-password');
+      const submitBtn = document.getElementById('btn-gate-citizen-login-submit');
 
       const email = emailInput ? emailInput.value.trim() : '';
       const pass = passInput ? passInput.value.trim() : '';
 
       if (!email || !pass) {
-        showGateError('Please enter both your email address and password.');
+        showCitizenError('Please enter both your email address and password.');
         return;
       }
 
@@ -160,16 +160,15 @@ function initAuthGateway() {
           <svg class="animate-spin h-4 w-4 text-white inline-block mr-2" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-          </svg> Verifying Credentials...
+          </svg> Verifying Citizen Credentials...
         `;
       }
 
       try {
-        await window.authClient.login(email, pass);
-        // Form reset on success
-        loginForm.reset();
+        await window.authClient.login(email, pass, 'citizen');
+        citLoginForm.reset();
       } catch (err) {
-        showGateError(err.message || 'Invalid email or password.');
+        showCitizenError(err.message || 'Invalid email or password.');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -179,18 +178,18 @@ function initAuthGateway() {
     });
   }
 
-  // Registration Form
-  const regForm = document.getElementById('form-gate-register');
-  if (regForm) {
-    regForm.addEventListener('submit', async (e) => {
+  // 2. Citizen Registration Form
+  const citRegForm = document.getElementById('form-gate-citizen-register');
+  if (citRegForm) {
+    citRegForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      clearGateError();
+      clearCitizenError();
 
-      const nameInput = document.getElementById('gate-reg-name');
-      const emailInput = document.getElementById('gate-reg-email');
-      const phoneInput = document.getElementById('gate-reg-phone');
-      const passInput = document.getElementById('gate-reg-password');
-      const submitBtn = document.getElementById('btn-gate-reg-submit');
+      const nameInput = document.getElementById('gate-citizen-reg-name');
+      const emailInput = document.getElementById('gate-citizen-reg-email');
+      const phoneInput = document.getElementById('gate-citizen-reg-phone');
+      const passInput = document.getElementById('gate-citizen-reg-password');
+      const submitBtn = document.getElementById('btn-gate-citizen-reg-submit');
 
       const name = nameInput ? nameInput.value.trim() : '';
       const email = emailInput ? emailInput.value.trim() : '';
@@ -198,12 +197,12 @@ function initAuthGateway() {
       const pass = passInput ? passInput.value.trim() : '';
 
       if (!name || !email || !pass) {
-        showGateError('Please fill in your name, email, and password.');
+        showCitizenError('Please fill in your name, email, and password.');
         return;
       }
 
       if (pass.length < 6) {
-        showGateError('Password must be at least 6 characters long.');
+        showCitizenError('Password must be at least 6 characters long.');
         return;
       }
 
@@ -214,15 +213,59 @@ function initAuthGateway() {
           <svg class="animate-spin h-4 w-4 text-white inline-block mr-2" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-          </svg> Creating Account...
+          </svg> Registering Account...
         `;
       }
 
       try {
         await window.authClient.register(name, email, pass, phone);
-        regForm.reset();
+        citRegForm.reset();
       } catch (err) {
-        showGateError(err.message || 'Registration failed.');
+        showCitizenError(err.message || 'Registration failed.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHtml;
+        }
+      }
+    });
+  }
+
+  // 3. Department Representative Official Sign In Form
+  const deptLoginForm = document.getElementById('form-gate-dept-login');
+  if (deptLoginForm) {
+    deptLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearDeptError();
+
+      const emailInput = document.getElementById('gate-dept-login-email');
+      const passInput = document.getElementById('gate-dept-login-password');
+      const submitBtn = document.getElementById('btn-gate-dept-login-submit');
+
+      const email = emailInput ? emailInput.value.trim() : '';
+      const pass = passInput ? passInput.value.trim() : '';
+
+      if (!email || !pass) {
+        showDeptError('Please enter your official municipal email and password.');
+        return;
+      }
+
+      const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg class="animate-spin h-4 w-4 text-white inline-block mr-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg> Authenticating Official...
+        `;
+      }
+
+      try {
+        await window.authClient.login(email, pass, 'department');
+        deptLoginForm.reset();
+      } catch (err) {
+        showDeptError(err.message || 'Invalid official email or password.');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -233,14 +276,14 @@ function initAuthGateway() {
   }
 }
 
-// Switch between Sign In and Create Account on the Auth Gate
-window.setAuthGateMode = function(mode) {
-  clearGateError();
+// Switch between Citizen Sign In and Citizen Register on the left card
+window.setCitizenGateMode = function(mode) {
+  clearCitizenError();
 
-  const tabSignIn = document.getElementById('gate-tab-signin');
-  const tabRegister = document.getElementById('gate-tab-register');
-  const formSignIn = document.getElementById('form-gate-login');
-  const formRegister = document.getElementById('form-gate-register');
+  const tabSignIn = document.getElementById('gate-citizen-tab-signin');
+  const tabRegister = document.getElementById('gate-citizen-tab-register');
+  const formSignIn = document.getElementById('form-gate-citizen-login');
+  const formRegister = document.getElementById('form-gate-citizen-register');
 
   if (mode === 'register') {
     if (tabRegister) {
@@ -269,9 +312,9 @@ window.toggleGatePasswordVisibility = function(inputId) {
   input.type = input.type === 'password' ? 'text' : 'password';
 };
 
-function showGateError(msg) {
-  const errBox = document.getElementById('gate-auth-error');
-  const errText = document.getElementById('gate-auth-error-text');
+function showCitizenError(msg) {
+  const errBox = document.getElementById('gate-citizen-error');
+  const errText = document.getElementById('gate-citizen-error-text');
   if (errBox && errText) {
     errText.innerText = msg;
     errBox.classList.remove('hidden');
@@ -279,8 +322,23 @@ function showGateError(msg) {
   showToast(msg, 'error');
 }
 
-function clearGateError() {
-  const errBox = document.getElementById('gate-auth-error');
+function clearCitizenError() {
+  const errBox = document.getElementById('gate-citizen-error');
+  if (errBox) errBox.classList.add('hidden');
+}
+
+function showDeptError(msg) {
+  const errBox = document.getElementById('gate-dept-error');
+  const errText = document.getElementById('gate-dept-error-text');
+  if (errBox && errText) {
+    errText.innerText = msg;
+    errBox.classList.remove('hidden');
+  }
+  showToast(msg, 'error');
+}
+
+function clearDeptError() {
+  const errBox = document.getElementById('gate-dept-error');
   if (errBox) errBox.classList.add('hidden');
 }
 

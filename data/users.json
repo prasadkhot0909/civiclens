@@ -88,5 +88,16 @@
     "departmentName": null,
     "isEmailVerified": true,
     "createdAt": "2026-10-29T17:20:01.400Z"
+  },
+  {
+    "id": "usr_cit_1793426565360",
+    "email": "prasadkhot0909@gmail.com",
+    "passwordHash": "507848f48c458f6f8a9b787b8929b26f81b9010546a0cb8dfc1d77120806b2c8fa1bef8063d5d1b38648b5cc304c1e4856bbe6a9e7469052cc260ab172595b47",
+    "name": "Prasad Khot",
+    "phone": "69856458245",
+    "role": "CITIZEN",
+    "departmentId": null,
+    "departmentName": null,
+    "createdAt": "2026-10-31T06:02:45.364Z"
   }
 ]

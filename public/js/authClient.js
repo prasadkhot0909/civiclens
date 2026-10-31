@@ -58,7 +58,7 @@ class AuthClient {
   }
 
   // Standard Login (Citizen or Department Representative)
-  async login(email, password) {
+  async login(email, password, portal = null) {
     try {
       const cleanEmail = email ? email.trim() : '';
       const cleanPass = password ? password.trim() : '';
@@ -70,7 +70,7 @@ class AuthClient {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail, password: cleanPass })
+        body: JSON.stringify({ email: cleanEmail, password: cleanPass, portal })
       });
 
       const data = await res.json();

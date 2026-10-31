@@ -5,7 +5,7 @@ const { authManager, requireAuth } = require('../auth/auth');
 // Unified Secure Login endpoint (Citizens & Department Representatives)
 router.post('/login', (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, portal, requiredRole } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
@@ -14,7 +14,8 @@ router.post('/login', (req, res) => {
       });
     }
 
-    const session = authManager.login(email, password);
+    const roleTarget = requiredRole || (portal === 'department' ? 'DEPARTMENT' : (portal === 'citizen' ? 'CITIZEN' : null));
+    const session = authManager.login(email, password, roleTarget);
 
     res.json({
       success: true,
