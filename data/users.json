@@ -121,5 +121,16 @@
     "departmentName": "Road Administration & Transport Department",
     "title": "chief",
     "createdAt": "2026-10-31T08:16:56.841Z"
+  },
+  {
+    "id": "usr_dept_1793436953949",
+    "email": "rajesh.123@gov.in",
+    "passwordHash": "1cc9f88ab7d6cf4b0c8c4b40d128b33bb6a107d1660abd50fa2ee8ad86f7cfd6f6232179665d8b1cd64cc263dab87578a41b134cc1c6765ab689b2d8807abd18",
+    "name": "rajesh  Sharma",
+    "role": "DEPARTMENT",
+    "departmentId": "road_admin",
+    "departmentName": "Road Administration & Transport Department",
+    "title": "chief",
+    "createdAt": "2026-10-31T08:55:53.951Z"
   }
 ]
