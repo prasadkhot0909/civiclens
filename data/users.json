@@ -99,5 +99,27 @@
     "departmentId": null,
     "departmentName": null,
     "createdAt": "2026-10-31T06:02:45.364Z"
+  },
+  {
+    "id": "usr_dept_1793434524758",
+    "email": "rajesh@citygov.in",
+    "passwordHash": "1cc9f88ab7d6cf4b0c8c4b40d128b33bb6a107d1660abd50fa2ee8ad86f7cfd6f6232179665d8b1cd64cc263dab87578a41b134cc1c6765ab689b2d8807abd18",
+    "name": "Rajesh  Sharma",
+    "role": "DEPARTMENT",
+    "departmentId": "road_admin",
+    "departmentName": "Road Administration & Transport Department",
+    "title": "chief",
+    "createdAt": "2026-10-31T08:15:24.760Z"
+  },
+  {
+    "id": "usr_dept_1793434616840",
+    "email": "rajesh@city.in",
+    "passwordHash": "1cc9f88ab7d6cf4b0c8c4b40d128b33bb6a107d1660abd50fa2ee8ad86f7cfd6f6232179665d8b1cd64cc263dab87578a41b134cc1c6765ab689b2d8807abd18",
+    "name": "Rajesh",
+    "role": "DEPARTMENT",
+    "departmentId": "road_admin",
+    "departmentName": "Road Administration & Transport Department",
+    "title": "chief",
+    "createdAt": "2026-10-31T08:16:56.841Z"
   }
 ]

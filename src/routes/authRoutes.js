@@ -5,7 +5,7 @@ const { authManager, requireAuth } = require('../auth/auth');
 // Unified Secure Login endpoint (Citizens & Department Representatives)
 router.post('/login', (req, res) => {
   try {
-    const { email, password, portal, requiredRole } = req.body;
+    const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
@@ -14,14 +14,14 @@ router.post('/login', (req, res) => {
       });
     }
 
-    const roleTarget = requiredRole || (portal === 'department' ? 'DEPARTMENT' : (portal === 'citizen' ? 'CITIZEN' : null));
-    const session = authManager.login(email, password, roleTarget);
+    // Universal authentication: verify email and password and return authenticated session with user's role
+    const session = authManager.login(email, password);
 
     res.json({
       success: true,
       token: session.token,
       user: session.user,
-      message: `Welcome, ${session.user.name}!`
+      message: `Welcome back, ${session.user.name}!`
     });
   } catch (err) {
     res.status(401).json({

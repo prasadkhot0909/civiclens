@@ -190,6 +190,12 @@
                       class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 mt-2">
                 <span>👤</span> Sign In to Citizen Platform →
               </button>
+
+              <div class="text-center pt-1">
+                <button type="button" onclick="setCitizenGateMode('register')" class="text-[11px] text-gray-400 hover:text-blue-400 transition-colors">
+                  Don't have an account? <strong class="text-blue-400 underline font-semibold">Create an account</strong>
+                </button>
+              </div>
             </form>
 
             <!-- Form: Citizen Register -->
@@ -227,6 +233,12 @@
                       class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 mt-2">
                 <span>📝</span> Register & Enter Citizen Portal →
               </button>
+
+              <div class="text-center pt-1">
+                <button type="button" onclick="setCitizenGateMode('signin')" class="text-[11px] text-gray-400 hover:text-blue-400 transition-colors">
+                  Already have an account? <strong class="text-blue-400 underline font-semibold">Sign in here</strong>
+                </button>
+              </div>
             </form>
           </div>
 
@@ -308,6 +320,12 @@
                       class="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2 mt-2">
                 <span>🏛️</span> Sign In to Department Console →
               </button>
+
+              <div class="text-center pt-1">
+                <button type="button" onclick="setDeptGateMode('register')" class="text-[11px] text-gray-400 hover:text-amber-400 transition-colors">
+                  New Department Representative? <strong class="text-amber-400 underline font-semibold">Register official profile</strong>
+                </button>
+              </div>
             </form>
 
             <!-- Form: Department Official Registration -->
@@ -357,6 +375,12 @@
                       class="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2 mt-2">
                 <span>🏛️</span> Register Official & Enter Console →
               </button>
+
+              <div class="text-center pt-1">
+                <button type="button" onclick="setDeptGateMode('signin')" class="text-[11px] text-gray-400 hover:text-amber-400 transition-colors">
+                  Already registered official? <strong class="text-amber-400 underline font-semibold">Sign in here</strong>
+                </button>
+              </div>
             </form>
           </div>
 

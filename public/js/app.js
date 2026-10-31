@@ -134,6 +134,10 @@ window.onLogoClick = function() {
 // ================= DUAL-PORTAL AUTHENTICATION GATEWAY CONTROLLER =================
 
 function initAuthGateway() {
+  // Ensure default mode is Sign In on both cards
+  setCitizenGateMode('signin');
+  setDeptGateMode('signin');
+
   // 1. Citizen Sign In Form
   const citLoginForm = document.getElementById('form-gate-citizen-login');
   if (citLoginForm) {
@@ -220,6 +224,7 @@ function initAuthGateway() {
       try {
         await window.authClient.register(name, email, pass, phone);
         citRegForm.reset();
+        setCitizenGateMode('signin');
       } catch (err) {
         showCitizenError(err.message || 'Registration failed.');
       } finally {
@@ -319,6 +324,7 @@ function initAuthGateway() {
       try {
         await window.authClient.registerDepartment(name, email, pass, dept, title);
         deptRegForm.reset();
+        setDeptGateMode('signin');
       } catch (err) {
         showDeptError(err.message || 'Department registration failed.');
       } finally {
@@ -397,11 +403,39 @@ window.toggleGatePasswordVisibility = function(inputId) {
   input.type = input.type === 'password' ? 'text' : 'password';
 };
 
+window.switchToCitizenSignInWithEmail = function() {
+  const regEmailInput = document.getElementById('gate-citizen-reg-email');
+  const loginEmailInput = document.getElementById('gate-citizen-login-email');
+  const loginPassInput = document.getElementById('gate-citizen-login-password');
+  const emailVal = regEmailInput ? regEmailInput.value.trim() : '';
+  setCitizenGateMode('signin');
+  if (loginEmailInput && emailVal) {
+    loginEmailInput.value = emailVal;
+    if (loginPassInput) loginPassInput.focus();
+  }
+};
+
+window.switchToDeptSignInWithEmail = function() {
+  const regEmailInput = document.getElementById('gate-dept-reg-email');
+  const loginEmailInput = document.getElementById('gate-dept-login-email');
+  const loginPassInput = document.getElementById('gate-dept-login-password');
+  const emailVal = regEmailInput ? regEmailInput.value.trim() : '';
+  setDeptGateMode('signin');
+  if (loginEmailInput && emailVal) {
+    loginEmailInput.value = emailVal;
+    if (loginPassInput) loginPassInput.focus();
+  }
+};
+
 function showCitizenError(msg) {
   const errBox = document.getElementById('gate-citizen-error');
   const errText = document.getElementById('gate-citizen-error-text');
   if (errBox && errText) {
-    errText.innerText = msg;
+    if (typeof msg === 'string' && msg.toLowerCase().includes('already exists')) {
+      errText.innerHTML = `${msg} <button type="button" onclick="switchToCitizenSignInWithEmail()" class="text-blue-300 underline font-bold ml-1 hover:text-white">Sign In Now →</button>`;
+    } else {
+      errText.innerText = msg;
+    }
     errBox.classList.remove('hidden');
   }
   showToast(msg, 'error');
@@ -416,7 +450,11 @@ function showDeptError(msg) {
   const errBox = document.getElementById('gate-dept-error');
   const errText = document.getElementById('gate-dept-error-text');
   if (errBox && errText) {
-    errText.innerText = msg;
+    if (typeof msg === 'string' && msg.toLowerCase().includes('already exists')) {
+      errText.innerHTML = `${msg} <button type="button" onclick="switchToDeptSignInWithEmail()" class="text-amber-300 underline font-bold ml-1 hover:text-white">Sign In Now →</button>`;
+    } else {
+      errText.innerText = msg;
+    }
     errBox.classList.remove('hidden');
   }
   showToast(msg, 'error');

@@ -148,7 +148,18 @@ class AuthManager {
 
   findByEmail(email) {
     if (!email) return null;
-    return this.users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+    const clean = email.trim().toLowerCase();
+    let user = this.users.find(u => u.email && u.email.toLowerCase() === clean);
+    if (!user && fs.existsSync(USERS_FILE)) {
+      try {
+        const raw = fs.readFileSync(USERS_FILE, 'utf-8');
+        this.users = JSON.parse(raw);
+        user = this.users.find(u => u.email && u.email.toLowerCase() === clean);
+      } catch (err) {
+        console.error('[Auth] Error re-reading users file:', err);
+      }
+    }
+    return user || null;
   }
 
   registerCitizen({ email, password, name, phone }) {

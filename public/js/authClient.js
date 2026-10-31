@@ -98,11 +98,12 @@ class AuthClient {
       localStorage.setItem('civicsense_token', this.token);
 
       this.updateUI();
-      showToast(`Welcome back, ${this.currentUser.name}!`, 'success');
 
       if (this.currentUser.role === 'DEPARTMENT') {
+        showToast(`Welcome back, Officer ${this.currentUser.name}! Routing to Department Console...`, 'success');
         switchTab('dept');
       } else {
+        showToast(`Welcome back, ${this.currentUser.name}! Routing to Citizen Platform...`, 'success');
         switchTab('submit');
       }
 
@@ -207,6 +208,14 @@ class AuthClient {
     this.token = null;
     this.currentUser = null;
     localStorage.removeItem('civicsense_token');
+
+    // Reset both portal cards back to Sign In mode
+    if (typeof window.setCitizenGateMode === 'function') {
+      window.setCitizenGateMode('signin');
+    }
+    if (typeof window.setDeptGateMode === 'function') {
+      window.setDeptGateMode('signin');
+    }
 
     this.updateUI();
     showToast('You have been signed out.', 'info');
