@@ -274,6 +274,61 @@ function initAuthGateway() {
       }
     });
   }
+
+  // 4. Department Representative Registration Form
+  const deptRegForm = document.getElementById('form-gate-dept-register');
+  if (deptRegForm) {
+    deptRegForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearDeptError();
+
+      const nameInput = document.getElementById('gate-dept-reg-name');
+      const emailInput = document.getElementById('gate-dept-reg-email');
+      const deptSelect = document.getElementById('gate-dept-reg-dept');
+      const titleInput = document.getElementById('gate-dept-reg-title');
+      const passInput = document.getElementById('gate-dept-reg-password');
+      const submitBtn = document.getElementById('btn-gate-dept-reg-submit');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const dept = deptSelect ? deptSelect.value.trim() : 'road_admin';
+      const title = titleInput ? titleInput.value.trim() : '';
+      const pass = passInput ? passInput.value.trim() : '';
+
+      if (!name || !email || !pass) {
+        showDeptError('Please enter your full name, official municipal email, and password.');
+        return;
+      }
+
+      if (pass.length < 6) {
+        showDeptError('Password must be at least 6 characters long.');
+        return;
+      }
+
+      const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg class="animate-spin h-4 w-4 text-white inline-block mr-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg> Registering Official Account...
+        `;
+      }
+
+      try {
+        await window.authClient.registerDepartment(name, email, pass, dept, title);
+        deptRegForm.reset();
+      } catch (err) {
+        showDeptError(err.message || 'Department registration failed.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHtml;
+        }
+      }
+    });
+  }
 }
 
 // Switch between Citizen Sign In and Citizen Register on the left card
@@ -297,6 +352,36 @@ window.setCitizenGateMode = function(mode) {
   } else {
     if (tabSignIn) {
       tabSignIn.className = 'flex-1 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-md shadow-blue-600/30 transition-all';
+    }
+    if (tabRegister) {
+      tabRegister.className = 'flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all';
+    }
+    if (formSignIn) formSignIn.classList.remove('hidden');
+    if (formRegister) formRegister.classList.add('hidden');
+  }
+};
+
+// Switch between Department Sign In and Department Register on the right card
+window.setDeptGateMode = function(mode) {
+  clearDeptError();
+
+  const tabSignIn = document.getElementById('gate-dept-tab-signin');
+  const tabRegister = document.getElementById('gate-dept-tab-register');
+  const formSignIn = document.getElementById('form-gate-dept-login');
+  const formRegister = document.getElementById('form-gate-dept-register');
+
+  if (mode === 'register') {
+    if (tabRegister) {
+      tabRegister.className = 'flex-1 py-2 rounded-xl text-xs font-bold bg-amber-600 text-white shadow-md shadow-amber-600/30 transition-all';
+    }
+    if (tabSignIn) {
+      tabSignIn.className = 'flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all';
+    }
+    if (formRegister) formRegister.classList.remove('hidden');
+    if (formSignIn) formSignIn.classList.add('hidden');
+  } else {
+    if (tabSignIn) {
+      tabSignIn.className = 'flex-1 py-2 rounded-xl text-xs font-bold bg-amber-600 text-white shadow-md shadow-amber-600/30 transition-all';
     }
     if (tabRegister) {
       tabRegister.className = 'flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all';

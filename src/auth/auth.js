@@ -4,6 +4,14 @@ const crypto = require('crypto');
 
 const USERS_FILE = path.join(__dirname, '../../data/users.json');
 
+const DEPARTMENT_NAMES = {
+  road_admin: 'Road Administration & Transport Department',
+  municipal_corp: 'Municipal Solid Waste & Sanitation Corporation',
+  water_board: 'Water Supply & Sewerage Board',
+  power_board: 'Electricity & Public Infrastructure Board',
+  all: 'Central Municipal Administration (All Departments)'
+};
+
 // In-memory active session tokens
 const sessions = new Map();
 
@@ -175,6 +183,49 @@ class AuthManager {
       role: 'CITIZEN',
       departmentId: null,
       departmentName: null,
+      createdAt: new Date().toISOString()
+    };
+
+    this.users.push(newUser);
+    this.save();
+    return this.createSession(newUser);
+  }
+
+  registerDepartment({ email, password, name, departmentId, title }) {
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const cleanPass = password ? password.trim() : '';
+    const cleanName = name ? name.trim() : '';
+    const cleanDept = departmentId ? departmentId.trim() : 'road_admin';
+    const cleanTitle = title && title.trim() ? title.trim() : 'Department Representative';
+
+    if (!cleanEmail || !cleanPass || !cleanName) {
+      throw new Error('Please provide your name, official email address, and security password.');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      throw new Error('Please enter a valid email address (e.g. officer@city.gov).');
+    }
+
+    if (cleanPass.length < 6) {
+      throw new Error('Password must be at least 6 characters long.');
+    }
+
+    if (this.findByEmail(cleanEmail)) {
+      throw new Error('An account with this email address already exists. Please sign in instead.');
+    }
+
+    const departmentName = DEPARTMENT_NAMES[cleanDept] || 'Municipal Administration';
+
+    const newUser = {
+      id: `usr_dept_${Date.now()}`,
+      email: cleanEmail,
+      passwordHash: hashPassword(cleanPass),
+      name: cleanName,
+      role: 'DEPARTMENT',
+      departmentId: cleanDept,
+      departmentName: departmentName,
+      title: cleanTitle,
       createdAt: new Date().toISOString()
     };
 

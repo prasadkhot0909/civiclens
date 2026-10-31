@@ -264,7 +264,19 @@
 
             <div class="p-3 rounded-2xl bg-amber-950/30 border border-amber-800/40 text-[11px] text-amber-300/90 flex items-start gap-2">
               <span class="text-sm">🛡️</span>
-              <span><strong>Restricted Access:</strong> Only authorized Department Representatives and Municipal Engineers may sign in here.</span>
+              <span><strong>Official Access:</strong> Authorized Department Representatives and Municipal Engineers may sign in or register their official profile here.</span>
+            </div>
+
+            <!-- Mode Switcher Tabs (Sign In / Register) -->
+            <div class="flex p-1 bg-gray-950/80 rounded-2xl border border-gray-800 text-xs">
+              <button id="gate-dept-tab-signin" type="button" onclick="setDeptGateMode('signin')" 
+                      class="flex-1 py-2 rounded-xl text-xs font-bold bg-amber-600 text-white shadow-md shadow-amber-600/30 transition-all">
+                Official Sign In
+              </button>
+              <button id="gate-dept-tab-register" type="button" onclick="setDeptGateMode('register')" 
+                      class="flex-1 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-200 transition-all">
+                Register Officer
+              </button>
             </div>
 
             <!-- Dept Inline Error Banner -->
@@ -295,6 +307,55 @@
               <button type="submit" id="btn-gate-dept-login-submit" 
                       class="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2 mt-2">
                 <span>🏛️</span> Sign In to Department Console →
+              </button>
+            </form>
+
+            <!-- Form: Department Official Registration -->
+            <form id="form-gate-dept-register" class="space-y-3 hidden">
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-gray-300">Official Full Name</label>
+                <input type="text" id="gate-dept-reg-name" required placeholder="e.g. Er. Rajesh Sharma" autocomplete="name"
+                       class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 placeholder-gray-500 border border-amber-700/60 focus:border-amber-500" />
+              </div>
+
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-gray-300">Official Municipal Email</label>
+                <input type="email" id="gate-dept-reg-email" required placeholder="officer@city.gov" autocomplete="email"
+                       class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 placeholder-gray-500 border border-amber-700/60 focus:border-amber-500" />
+              </div>
+
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-gray-300">Department Jurisdiction</label>
+                <select id="gate-dept-reg-dept" required
+                        class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 bg-gray-900 border border-amber-700/60 focus:border-amber-500">
+                  <option value="road_admin">🚧 Road Administration & Transport Department</option>
+                  <option value="municipal_corp">🗑️ Municipal Solid Waste & Sanitation Corp</option>
+                  <option value="water_board">💧 Water Supply & Sewerage Board</option>
+                  <option value="power_board">⚡ Electricity & Public Infrastructure Board</option>
+                  <option value="all">🏛️ Central Municipal Administration (All Departments)</option>
+                </select>
+              </div>
+
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-gray-300">Designation / Title <span class="text-gray-500 font-normal">(Optional)</span></label>
+                <input type="text" id="gate-dept-reg-title" placeholder="e.g. Chief Maintenance Engineer" 
+                       class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 placeholder-gray-500 border border-amber-700/60 focus:border-amber-500" />
+              </div>
+
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <label class="block text-xs font-bold text-gray-300">Security Password</label>
+                  <button type="button" onclick="toggleGatePasswordVisibility('gate-dept-reg-password')" class="text-[10px] text-gray-400 hover:text-gray-200">
+                    Show / Hide
+                  </button>
+                </div>
+                <input type="password" id="gate-dept-reg-password" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password"
+                       class="w-full glass-input rounded-xl p-2.5 text-xs text-gray-100 placeholder-gray-500 border border-amber-700/60 focus:border-amber-500 font-mono" />
+              </div>
+
+              <button type="submit" id="btn-gate-dept-reg-submit" 
+                      class="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-2 mt-2">
+                <span>🏛️</span> Register Official & Enter Console →
               </button>
             </form>
           </div>

@@ -52,6 +52,27 @@ router.post('/register', (req, res) => {
   }
 });
 
+// Department Representative registration endpoint
+router.post('/register-department', (req, res) => {
+  try {
+    const { email, password, name, departmentId, title } = req.body;
+
+    const session = authManager.registerDepartment({ email, password, name, departmentId, title });
+
+    res.json({
+      success: true,
+      token: session.token,
+      user: session.user,
+      message: `Official account registered! Welcome to the Department Console, ${session.user.name}.`
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
 // Get current logged-in user profile
 router.get('/me', requireAuth, (req, res) => {
   res.json({

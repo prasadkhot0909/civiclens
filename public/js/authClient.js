@@ -136,6 +136,48 @@ class AuthClient {
     }
   }
 
+  // Department Representative Registration
+  async registerDepartment(name, email, password, departmentId, title = '') {
+    try {
+      const cleanName = name ? name.trim() : '';
+      const cleanEmail = email ? email.trim() : '';
+      const cleanPass = password ? password.trim() : '';
+      const cleanDept = departmentId ? departmentId.trim() : 'road_admin';
+      const cleanTitle = title ? title.trim() : '';
+
+      if (!cleanName || !cleanEmail || !cleanPass) {
+        throw new Error('Please enter your full name, official email, and password.');
+      }
+
+      const res = await fetch('/api/auth/register-department', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: cleanName,
+          email: cleanEmail,
+          password: cleanPass,
+          departmentId: cleanDept,
+          title: cleanTitle
+        })
+      });
+
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Department registration failed');
+
+      this.token = data.token;
+      this.currentUser = data.user;
+      localStorage.setItem('civicsense_token', this.token);
+
+      this.updateUI();
+      showToast(`Official account created! Welcome to the Department Console, ${this.currentUser.name}!`, 'success');
+      switchTab('dept');
+      return data;
+    } catch (err) {
+      showToast(err.message, 'error');
+      throw err;
+    }
+  }
+
   // Logout
   async logout() {
     if (this.token) {
