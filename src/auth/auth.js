@@ -122,6 +122,10 @@ class AuthManager {
 
   save() {
     try {
+      const dir = path.dirname(USERS_FILE);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
       fs.writeFileSync(USERS_FILE, JSON.stringify(this.users, null, 2), 'utf-8');
     } catch (err) {
       console.error('[Auth] Error saving users:', err);

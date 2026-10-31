@@ -49,6 +49,10 @@ function initKeys() {
     createdAt: new Date().toISOString()
   };
 
+  const dir = path.dirname(KEYS_FILE);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
   fs.writeFileSync(KEYS_FILE, JSON.stringify(keyPair, null, 2), 'utf-8');
   console.log(`[E2EE] Department RSA Key Pair initialized. Fingerprint: ${keyPair.fingerprint}`);
 }

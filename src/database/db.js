@@ -26,6 +26,10 @@ class Database {
 
   save() {
     try {
+      const dir = path.dirname(DB_FILE);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
       fs.writeFileSync(DB_FILE, JSON.stringify(this.grievances, null, 2), 'utf-8');
     } catch (err) {
       console.error('[DB] Error saving grievances:', err);
